@@ -56,8 +56,12 @@ async function login() {
           alert('로그인 성공');
       }
   } catch (error) {
-      // 로그인 실패
-      console.log(error.response.data);
-      alert('로그인 실패');
-  }
+    // 로그인 실패
+    if (error.response && error.response.data) {
+        console.log(error.response.data);
+    } else {
+        console.log(error);
+    }
+    alert('로그인 실패');
+}
 }
