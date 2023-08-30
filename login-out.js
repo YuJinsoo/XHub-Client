@@ -45,9 +45,6 @@ async function login() {
   try {
       // Axios를 사용하여 서버에 로그인 요청을 보냅니다.
       const response = await axios.post('http://localhost/player/login/', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-    }}, {
           email: email,
           password: password
       });
