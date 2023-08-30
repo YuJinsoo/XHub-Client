@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>운동 매칭 서비스</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1><a href="./index.html"></a>운동 매칭 서비스</h1>
+
+    <!-- Navbar 상단 줄 메뉴 링크 부분 -->
+    <div id="navbar">
+        <a href="./login.html" onclick="showSection('login')">로그인</a>
+        <a href="./register.html" onclick="showSection('signup')">회원가입</a>
+        <a href="./quickmatch.html" onclick="showSection('quickmatch')">퀵매치</a>
+        <a href="./group.html" onclick="showSection('group')">그룹 앱</a>
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // 초기에 모든 섹션을 숨깁니다.
+        document.querySelectorAll('.section').forEach(function(section) {
+            section.style.display = 'none';
+        });
+
+        // 특정 섹션만 표시하는 함수
+        function showSection(id) {
+            // 모든 섹션을 숨깁니다.
+            document.querySelectorAll('.section').forEach(function(section) {
+                section.style.display = 'none';
+            });
+            // 선택한 섹션만 표시합니다.
+            document.getElementById(id).style.display = 'block';
+        }
+    </script>
+
+    <!-- 자바스크립트 import 목록 -->
+    <script src="index.js" />
+    <script src="auth.js" />
+</body>
+</html>

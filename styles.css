@@ -1,0 +1,65 @@
+/* 간단한 스타일링 */
+body { 
+    font-family: Arial, sans-serif; 
+}
+
+form { 
+    margin-bottom: 20px; 
+}
+
+
+/* Navbar */
+#navbar {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+#navbar a {
+margin: 0 15px;
+color: white;
+text-decoration: none;
+}
+
+/* Section Headers */
+h1, h2 {
+font-weight: bold;
+}
+
+/* Forms */
+.group {
+margin-bottom: 20px;
+}
+
+.group label {
+display: inline-block;
+width: 100px;
+}
+
+.group input {
+padding: 0.5em;
+width: 200px;
+}
+
+/* Centered Content */
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;  /* 100% of the viewport height */
+}
+
+/* Buttons */
+button {
+background-color: #007bff;
+color: white;
+padding: 0.5em 1em;
+border: none;
+cursor: pointer;
+}
+
+button:hover {
+background-color: #0056b3;
+}

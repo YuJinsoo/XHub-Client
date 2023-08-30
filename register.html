@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>그룹 - 운동 매칭 서비스</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* 간단한 스타일링 */
+        body { font-family: Arial, sans-serif; }
+        form { margin-bottom: 20px; }
+        .group { margin-bottom: 10px; }
+    </style>
+</head>
+<body>  
+    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+    <!-- 회원가입 섹션 -->
+    <div id="signup" class="section">
+        <h1>회원가입</h1>
+        <form>
+            <div class="group">
+                <label for="signupEmail">이메일:</label>
+                <input type="email" id="signupEmail" required>
+            </div>
+            <div class="group">
+                <label for="signupPassword">비밀번호:</label>
+                <input type="password" id="signupPassword" required>
+            </div>
+            <button type="button" onclick="signup()">회원가입</button>
+        </form>
+    </div>
+</body>
+</html>
