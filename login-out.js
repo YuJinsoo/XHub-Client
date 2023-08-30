@@ -1,41 +1,17 @@
 // 로그인 상태를 나타내는 변수 (실제 프로젝트에서는 서버에서 관리해야 합니다)
-// let isLoggedIn = false;
+let isLoggedIn = false;
 
-// // 로그아웃 버튼의 DOM 요소
-// const logoutButton = document.getElementById('logoutButton');
+// 로그아웃 버튼의 DOM 요소
+const logoutButton = document.getElementById('logoutButton');
 
-// // 페이지 로드시 로그아웃 버튼의 상태를 설정
-// window.addEventListener('load', function() {
-//   if (isLoggedIn) {
-//     logoutButton.style.display = 'inline';  // 로그인 상태일 때 버튼을 표시
-//   } else {
-//     logoutButton.style.display = 'none';  // 로그아웃 상태일 때 버튼을 숨김
-//   }
-// });
-
-// 회원가입 함수
-async function signup() {
-  var email = document.getElementById('signupEmail').value;
-  var password = document.getElementById('signupPassword').value;
-
-  try {
-      // Axios를 사용하여 서버에 회원가입 요청을 보냅니다.
-      const response = await axios.post('http://localhost/player/register/', {
-          email: email,
-          password: password
-      });
-
-      // 회원가입 성공
-      if (response.status === 200) {
-          alert('회원가입 성공');
-      }
-  } catch (error) {
-      // 회원가입 실패
-      console.log(error.response.data);
-      alert('회원가입 실패');
+// 페이지 로드시 로그아웃 버튼의 상태를 설정
+window.addEventListener('load', function() {
+  if (isLoggedIn) {
+    logoutButton.style.display = 'inline';  // 로그인 상태일 때 버튼을 표시
+  } else {
+    logoutButton.style.display = 'none';  // 로그아웃 상태일 때 버튼을 숨김
   }
-}
-
+});
 
 // 로그아웃 함수
 async function logout() {
