@@ -20,7 +20,7 @@ async function signup() {
 
   try {
       // Axios를 사용하여 서버에 회원가입 요청을 보냅니다.
-      const response = await axios.post('/api/signup', {
+      const response = await axios.post('http://localhost/player/register/', {
           email: email,
           password: password
       });
@@ -31,6 +31,7 @@ async function signup() {
       }
   } catch (error) {
       // 회원가입 실패
+      console.log(error.response.data);
       alert('회원가입 실패');
   }
 }
@@ -40,7 +41,8 @@ async function signup() {
 async function logout() {
   try {
       // Axios를 사용하여 서버에 로그아웃 요청을 보냅니다.
-      const response = await axios.post('/api/logout');
+      const response = await axios.post('http://localhost/player/logout/');
+
 
       // 로그아웃 성공
       if (response.status === 200) {
@@ -50,6 +52,7 @@ async function logout() {
       }
   } catch (error) {
       // 로그아웃 실패
+      console.log(error.response.data);
       alert('로그아웃 실패');
   }
 }
@@ -62,7 +65,7 @@ async function login() {
 
   try {
       // Axios를 사용하여 서버에 로그인 요청을 보냅니다.
-      const response = await axios.post('/api/login', {
+      const response = await axios.post('http://localhost/player/login/', {
           email: email,
           password: password
       });
@@ -75,6 +78,7 @@ async function login() {
       }
   } catch (error) {
       // 로그인 실패
+      console.log(error.response.data);
       alert('로그인 실패');
   }
 }
