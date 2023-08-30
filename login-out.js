@@ -13,22 +13,25 @@ window.addEventListener('load', function() {
   }
 });
 
+
 // 로그아웃 함수
 async function logout() {
   try {
       // Axios를 사용하여 서버에 로그아웃 요청을 보냅니다.
-      const response = await axios.post('http://localhost/player/logout/');
-
+      const response = await axios.delete('http://localhost/player/logout/', {
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          }
+      });
 
       // 로그아웃 성공
       if (response.status === 200) {
-          isLoggedIn = false;
-          logoutButton.style.display = 'none';
+          localStorage.removeItem('accessToken');  // Local storage에서 accessToken 제거
+          logoutButton.style.display = 'none';     // 로그아웃 버튼 숨기기
           alert('로그아웃 성공');
       }
   } catch (error) {
       // 로그아웃 실패
-      console.log(error.response.data);
       alert('로그아웃 실패');
   }
 }
@@ -42,6 +45,9 @@ async function login() {
   try {
       // Axios를 사용하여 서버에 로그인 요청을 보냅니다.
       const response = await axios.post('http://localhost/player/login/', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }}, {
           email: email,
           password: password
       });

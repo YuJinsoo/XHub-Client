@@ -11,7 +11,7 @@ async function signup() {
         });
 
         // 회원가입 성공
-        if (response.status === 200) {
+        if (response.status === 201) {
             alert('회원가입 성공');
         }
     } catch (error) {
