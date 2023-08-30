@@ -1,17 +1,17 @@
 // 로그인 상태를 나타내는 변수 (실제 프로젝트에서는 서버에서 관리해야 합니다)
-let isLoggedIn = false;
+// let isLoggedIn = false;
 
-// 로그아웃 버튼의 DOM 요소
-const logoutButton = document.getElementById('logoutButton');
+// // 로그아웃 버튼의 DOM 요소
+// const logoutButton = document.getElementById('logoutButton');
 
-// 페이지 로드시 로그아웃 버튼의 상태를 설정
-window.addEventListener('load', function() {
-  if (isLoggedIn) {
-    logoutButton.style.display = 'inline';  // 로그인 상태일 때 버튼을 표시
-  } else {
-    logoutButton.style.display = 'none';  // 로그아웃 상태일 때 버튼을 숨김
-  }
-});
+// // 페이지 로드시 로그아웃 버튼의 상태를 설정
+// window.addEventListener('load', function() {
+//   if (isLoggedIn) {
+//     logoutButton.style.display = 'inline';  // 로그인 상태일 때 버튼을 표시
+//   } else {
+//     logoutButton.style.display = 'none';  // 로그아웃 상태일 때 버튼을 숨김
+//   }
+// });
 
 // 회원가입 함수
 async function signup() {
