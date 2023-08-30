@@ -13,55 +13,64 @@ window.addEventListener('load', function() {
   }
 });
 
+// 세션 만료 처리
+async function handleResponseError(error) {
+  if (error.response.status === 401) {
+    alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+    // 필요하다면 로그인 페이지로 리디렉션
+    window.location.href = '/path/to/login';
+  } else {
+    console.log(error);
+    alert('오류가 발생했습니다.');
+  }
+}
 
 // 로그아웃 함수
 async function logout() {
   try {
-      // Axios를 사용하여 서버에 로그아웃 요청을 보냅니다.
       const response = await axios.delete('http://localhost/player/logout/', {
           headers: {
               'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
       });
 
-      // 로그아웃 성공
       if (response.status === 200) {
-          localStorage.removeItem('accessToken');  // Local storage에서 accessToken 제거
-          logoutButton.style.display = 'none';     // 로그아웃 버튼 숨기기
+          localStorage.removeItem('accessToken');
+          logoutButton.style.display = 'none';
           alert('로그아웃 성공');
       }
   } catch (error) {
-      // 로그아웃 실패
-      alert('로그아웃 실패');
+      handleResponseError(error);  // 위에서 정의한 에러 핸들링 함수 사용
   }
 }
 
 
-// 로그인 함수 (예시)
+// 로그인 함수
 async function login() {
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
 
   try {
-      // Axios를 사용하여 서버에 로그인 요청을 보냅니다.
       const response = await axios.post('http://localhost/player/login/', {
           email: email,
           password: password
       });
 
-      // 로그인 성공
-      if (response.status === 200) {
+      if (response.status === 200 && response.data && response.data.access) {
+          // 로그인 성공 시 accessToken을 localStorage에 저장
+          localStorage.setItem('accessToken', response.data.access);
           isLoggedIn = true;
           logoutButton.style.display = 'inline';
           alert('로그인 성공');
+      } else {
+          alert('로그인 실패');
       }
   } catch (error) {
-    // 로그인 실패
     if (error.response && error.response.data) {
         console.log(error.response.data);
     } else {
         console.log(error);
     }
     alert('로그인 실패');
-}
+  }
 }
