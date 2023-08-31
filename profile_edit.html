@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>회원정보 수정</title>
+</head>
+<body>
+    <h1>회원정보 수정</h1>
+
+    <form id="profileForm">
+        <label>
+            Email:
+            <input type="email" id="email" disabled>
+        </label>
+
+        <label>
+            Activity Point:
+            <input type="text" id="activity_point" disabled>
+        </label>
+        
+        <!-- Password -->
+        <label>
+            Current Password (Required for any update):
+            <input type="password" id="currentPassword" required>
+        </label>
+
+        <!-- Profile Image -->
+        <label>
+            Profile Image:
+            <input type="file" id="profile_img" accept="image/*">
+        </label>
+
+        <!-- Age -->
+        <label>
+            Age:
+            <input type="date" id="age">
+        </label>
+
+        <!-- Gender -->
+        <label>
+            Gender:
+            <select id="gender">
+                <option value="M">남</option>
+                <option value="W">여</option>
+                <option value="X">비공개</option>
+            </select>
+        </label>
+
+        <!-- Category -->
+        <label>
+            Category:
+            <select id="category">
+                <option value="축구(풋살)">축구(풋살)</option>
+                <option value="농구">농구</option>
+                <option value="배드민턴">배드민턴</option>
+                <option value="볼링">볼링</option>
+                <option value="테니스">테니스</option>
+                <option value="골프">골프</option>
+            </select>
+        </label>
+
+        <!-- Position -->
+        <label>
+            Position:
+            <select id="position">
+                <option value="FW">공격</option>
+                <option value="DF">수비</option>
+                <option value="SUB">보조</option>
+                <option value="X">비활성화</option>
+            </select>
+        </label>
+
+        <!-- ... Add other fields similarly -->
+
+        <button type="button" onclick="submitProfile()">저장</button>
+        <button type="button" onclick="goToPasswordChange()">비밀번호 수정</button>
+    </form>
+    <button onclick="location.href='index.html'">돌아가기</button>
+    <script src="profile_edit.js"></script>
+</body>
+</html>
