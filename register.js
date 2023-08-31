@@ -13,6 +13,7 @@ async function signup() {
         // 회원가입 성공
         if (response.status === 201) {
             alert('회원가입 성공');
+            document.location.href = 'login.html';
         }
     } catch (error) {
         // 회원가입 실패

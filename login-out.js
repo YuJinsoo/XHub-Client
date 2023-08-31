@@ -1,24 +1,42 @@
-// 로그인 상태를 나타내는 변수 (실제 프로젝트에서는 서버에서 관리해야 합니다)
-let isLoggedIn = false;
+// 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
+if (localStorage.getItem('accessToken')) {
+  isLoggedIn = true;
+} else {
+  isLoggedIn = false;
+}
 
-// 로그아웃 버튼의 DOM 요소
-const logoutButton = document.getElementById('logoutButton');
+function updateButtonVisibility() {
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const profileBtn = document.getElementById('profileBtn');
 
-// 페이지 로드시 로그아웃 버튼의 상태를 설정
-window.addEventListener('load', function() {
   if (isLoggedIn) {
-    logoutButton.style.display = 'inline';  // 로그인 상태일 때 버튼을 표시
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+      logoutBtn.style.display = 'inline';
+      profileBtn.style.display = 'inline';
   } else {
-    logoutButton.style.display = 'none';  // 로그아웃 상태일 때 버튼을 숨김
+      loginBtn.style.display = 'inline';
+      signupBtn.style.display = 'inline';
+      logoutBtn.style.display = 'none';
+      profileBtn.style.display = 'none';
   }
+}
+
+window.addEventListener('load', function() {
+  updateButtonVisibility(); // 페이지 로드 시 버튼 상태 업데이트
+
 });
+
 
 // 세션 만료 처리
 async function handleResponseError(error) {
   if (error.response.status === 401) {
     alert('세션이 만료되었습니다. 다시 로그인해주세요.');
     // 필요하다면 로그인 페이지로 리디렉션
-    window.location.href = '/path/to/login';
+    localStorage.removeItem('accessToken');
+    window.location.href = 'login.html';
   } else {
     console.log(error);
     alert('오류가 발생했습니다.');
@@ -35,12 +53,13 @@ async function logout() {
       });
 
       if (response.status === 200) {
-          localStorage.removeItem('accessToken');
-          logoutButton.style.display = 'none';
-          alert('로그아웃 성공');
-      }
+        localStorage.removeItem('accessToken');
+        isLoggedIn = false;  // 로그아웃 했으므로 isLoggedIn을 false로 설정
+        updateButtonVisibility();
+        alert('로그아웃 성공');
+    }
   } catch (error) {
-      handleResponseError(error);  // 위에서 정의한 에러 핸들링 함수 사용
+      handleResponseError(error);
   }
 }
 
@@ -60,8 +79,9 @@ async function login() {
           // 로그인 성공 시 accessToken을 localStorage에 저장
           localStorage.setItem('accessToken', response.data.access);
           isLoggedIn = true;
-          logoutButton.style.display = 'inline';
+          updateButtonVisibility();
           alert('로그인 성공');
+          document.location.href = 'index.html';
       } else {
           alert('로그인 실패');
       }

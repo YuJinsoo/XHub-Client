@@ -11,13 +11,15 @@
 
     <!-- Navbar 상단 줄 메뉴 링크 부분 -->
     <div id="navbar">
-        <a href="./login.html" onclick="showSection('login')">로그인</a>
-        <a href="./register.html" onclick="showSection('signup')">회원가입</a>
+        <a id="loginBtn" href="./login.html" onclick="showSection('login')">로그인</a>
+        <a id="signupBtn" href="./register.html" onclick="showSection('signup')">회원가입</a>
+        <a id="profileBtn" href="./profile_edit.html">회원 정보수정</a>
+        <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
         <a href="./quickmatch.html" onclick="showSection('quickmatch')">퀵매치</a>
         <a href="./group.html" onclick="showSection('group')">그룹 앱</a>
     </div>
 
-    <!-- JavaScript 로직 -->
+    <!-- JavaScript 로직
     <script>
         // 초기에 모든 섹션을 숨깁니다.
         document.querySelectorAll('.section').forEach(function(section) {
@@ -33,10 +35,9 @@
             // 선택한 섹션만 표시합니다.
             document.getElementById(id).style.display = 'block';
         }
-    </script>
-
+    </script> -->
     <!-- 자바스크립트 import 목록 -->
-    <script src="index.js" />
-    <script src="auth.js" />
+    <script src="login-out.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
