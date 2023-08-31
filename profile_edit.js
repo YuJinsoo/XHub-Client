@@ -1,8 +1,6 @@
 const emailInput = document.getElementById('email');
 const activityPointInput = document.getElementById('activity_point');
 const profileImgInput = document.getElementById('profile_img');
-// ... Other fields ...
-
 // async function handleResponseError(error) {
 //     if (error.response.status === 401) {
 //         alert('세션이 만료되었습니다. 다시 로그인해주세요.');
@@ -15,18 +13,31 @@ const profileImgInput = document.getElementById('profile_img');
 //     }
 // }
 
+
+
 async function fetchProfile() {
+    console.log("Fetching profile...");
     try {
-        const response = await axios.get('http://localhost/player/update/', {
+        const response = await axios.get('http://127.0.0.1:8000/player/update/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         });
 
+
+
         const data = response.data;
+        console.log("Fetched data:", data);
+
+        // Update input fields with fetched data
         emailInput.value = data.email;
         activityPointInput.value = data.activity_point;
-        // ... Populate other fields ...
+
+        // Add the following lines to update other fields
+        document.getElementById('age').value = data.age || '';
+        document.getElementById('gender').value = data.gender || 'X'; // Default to 'X' if null
+        document.getElementById('category').value = data.category || ''; 
+        document.getElementById('position').value = data.position || 'X'; // Default to 'X' if null
 
     } catch (error) {
         console.error('Failed to fetch profile:', error);
@@ -34,6 +45,7 @@ async function fetchProfile() {
 }
 
 async function submitProfile() {
+    console.log("Submitting profile...");
     try {
         const formData = new FormData();
         formData.append('age', document.getElementById('age').value);
@@ -41,21 +53,27 @@ async function submitProfile() {
         formData.append('category', document.getElementById('category').value);
         formData.append('position', document.getElementById('position').value);
 
+        console.log("Form Data: ", formData);
+
         const password = document.getElementById('currentPassword').value;
         const profileImg = profileImgInput.files[0];
 
         if (password) {
-            formData.append('password', password);
+            formData.append('currentPassword', password);  // 'password'를 'currentPassword'로 수정
         }
         if (profileImg) {
             formData.append('profile_img', profileImg);
         }
 
-        const response = await axios.put('http://localhost/player/update/', formData, {
+        const response = await axios.put('http://127.0.0.1:8000/player/update/', formData, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         });
+
+
+
+        console.log("Server response: ", response);
 
         if (response.status === 200) {
             alert('회원정보가 성공적으로 수정되었습니다.');
@@ -65,7 +83,11 @@ async function submitProfile() {
     } catch (error) {
         if (error.response && error.response.data) {
             const errorMessage = error.response.data;
-            if (errorMessage.password) {
+            console.error("Server error message: ", errorMessage);
+    
+            if (errorMessage.detail) {
+                alert(errorMessage.detail);
+            } else if (errorMessage.password) {
                 alert(errorMessage.password[0]);
             } else {
                 console.error('Failed to update profile:', error);
@@ -74,7 +96,7 @@ async function submitProfile() {
             console.error('Failed to update profile:', error);
         }
     }
-}
+}    
 
 function goToPasswordChange() {
     // Redirect to password change page
@@ -82,4 +104,7 @@ function goToPasswordChange() {
 }
 
 // Fetch profile on page load
-window.onload = fetchProfile;
+window.onload = () => {
+    console.log("Window loaded. Fetching profile...");
+    fetchProfile();
+}
