@@ -14,15 +14,22 @@
             Email:
             <input type="email" id="email" disabled>
         </label>
+
         <label>
             Activity Point:
             <input type="text" id="activity_point" disabled>
+        </label>
+        
+        <!-- Password -->
+        <label>
+            Current Password (Required for any update):
+            <input type="password" id="currentPassword" required>
         </label>
 
         <!-- Profile Image -->
         <label>
             Profile Image:
-            <input type="file" id="profile_img">
+            <input type="file" id="profile_img" accept="image/*">
         </label>
 
         <!-- Age -->
@@ -47,7 +54,10 @@
             <select id="category">
                 <option value="축구(풋살)">축구(풋살)</option>
                 <option value="농구">농구</option>
-                <!-- ... Other categories ... -->
+                <option value="배드민턴">배드민턴</option>
+                <option value="볼링">볼링</option>
+                <option value="테니스">테니스</option>
+                <option value="골프">골프</option>
             </select>
         </label>
 
@@ -57,7 +67,8 @@
             <select id="position">
                 <option value="FW">공격</option>
                 <option value="DF">수비</option>
-                <!-- ... Other positions ... -->
+                <option value="SUB">보조</option>
+                <option value="X">비활성화</option>
             </select>
         </label>
 
@@ -66,7 +77,7 @@
         <button type="button" onclick="submitProfile()">저장</button>
         <button type="button" onclick="goToPasswordChange()">비밀번호 수정</button>
     </form>
-
+    <button onclick="location.href='index.html'">돌아가기</button>
     <script src="profile_edit.js"></script>
 </body>
 </html>
