@@ -98,10 +98,36 @@ async function submitProfile() {
     }
 }    
 
+async function unregister() {
+    if (confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+        try {
+            const response = await axios.delete('http://127.0.0.1:8000/player/unregister/', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            
+            if (response.status === 204 || response.status === 200) {
+                alert("회원 탈퇴가 완료되었습니다.");
+                localStorage.removeItem('accessToken');
+                // 필요하다면 로그인 페이지로 리디렉션
+                window.location.href = 'login.html';
+            } else {
+                alert("회원 탈퇴에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error('Failed to unregister:', error);
+            alert('회원 탈퇴에 실패했습니다.');
+        }
+    }
+}
+
+
 function goToPasswordChange() {
     // Redirect to password change page
     window.location.href = 'update-ps.html';
 }
+
 
 // Fetch profile on page load
 window.onload = () => {

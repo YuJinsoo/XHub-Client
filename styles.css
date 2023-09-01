@@ -7,6 +7,21 @@ form {
     margin-bottom: 20px; 
 }
 
+/* 회원 목록 */
+#userListContainer {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#userListContainer li {
+    border: 1px solid #ccc;
+    margin: 8px 0;
+    padding: 8px;
+    text-align: left;
+    border-radius: 4px;
+}
+
+
 
 /* Navbar */
 #navbar {

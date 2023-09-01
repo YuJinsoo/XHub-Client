@@ -16,28 +16,17 @@
         <a id="profileBtn" href="./profile_edit.html">회원 정보수정</a>
         <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
         <a href="./quickmatch.html" onclick="showSection('quickmatch')">퀵매치</a>
-        <a href="./group.html" onclick="showSection('group')">그룹 앱</a>
+        <a href="./group.html" onclick="showSection('group')">게시판</a>
+        <a href="./playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
+        <a href="./friend.html" onclick="showSection('playerList')">친구 목록</a>
     </div>
 
-    <!-- JavaScript 로직
-    <script>
-        // 초기에 모든 섹션을 숨깁니다.
-        document.querySelectorAll('.section').forEach(function(section) {
-            section.style.display = 'none';
-        });
 
-        // 특정 섹션만 표시하는 함수
-        function showSection(id) {
-            // 모든 섹션을 숨깁니다.
-            document.querySelectorAll('.section').forEach(function(section) {
-                section.style.display = 'none';
-            });
-            // 선택한 섹션만 표시합니다.
-            document.getElementById(id).style.display = 'block';
-        }
-    </script> -->
+
     <!-- 자바스크립트 import 목록 -->
     <script src="login-out.js"></script>
     <script src="index.js"></script>
+    <script src="playerList.js"></script>
+    <script src="friend.js"></script>
 </body>
 </html>
