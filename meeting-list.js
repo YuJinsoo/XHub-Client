@@ -33,17 +33,17 @@ function populateMeetingList(data) {
             // 참석 로직 구현
         }
 
-        const leaveBtn = document.createElement('button');
-        leaveBtn.className = 'leave-btn';
-        leaveBtn.textContent = '떠나기';
-        leaveBtn.onclick = function() {
+        const detailBtn = document.createElement('button');
+        detailBtn.className = 'detail-btn';
+        detailBtn.textContent = '상세보기';
+        detailBtn.onclick = function() {
             // 떠나기 로직 구현
         }
 
         meetingItem.appendChild(title);
         meetingItem.appendChild(description);
         meetingItem.appendChild(joinBtn);
-        meetingItem.appendChild(leaveBtn);
+        meetingItem.appendChild(detailBtn);
 
         meetingList.appendChild(meetingItem);
     });
