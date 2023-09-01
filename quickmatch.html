@@ -17,28 +17,16 @@
         <h2>Quicmmatch (퀵매치)</h2>
         <form>
             <div class="group">
-                <label for="eventName">모임명:</label>
+                <label for="eventName">모임이름*:</label>
                 <input type="text" id="eventName" required>
             </div>
             <div class="group">
-                <label for="eventDate">나이제한:</label>
-                <input type="date" id="eventDate" required>
-            </div>
-            <div class="group">
-                <label for="eventDate">나이제한:</label>
-                <input type="date" id="eventDate" required>
+                <label for="eventDescription">모임설명*:</label>
+                <input type="textarea" id="eventDescription" required>
             </div>
             <div class="group">
                 <label for="eventCategory">종목:</label>
-                <select name="category" id="eventCategory">
-                    <option value="M">남자만</option>
-                    <option value="W">여자만</option>
-                    <option value="X">모두다</option>
-                </select>
-            </div>
-            <div class="group">
-                <label for="eventGenderLimit">성별제한:</label>
-                <select name="genderlimit" id="eventGenderLimit">
+                <select name="category" id="eventGenderLimit">
                     <option value="축구(풋살)">축구(풋살)</option>
                     <option value="농구">농구</option>
                     <option value="배트민턴">배트민턴</option>
@@ -48,14 +36,27 @@
                 </select>
             </div>
             <div class="group">
-                <label for="eventLocation">모임장소:</label>
-                <input type="text" id="eventLocation">
+                <label for="eventGenderLimit">성별제한:</label>
+                <select name="genderlimit" id="eventGenderLimit">
+                    <option value="M">남자만</option>
+                    <option value="W">여자만</option>
+                    <option value="X">모두다</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="eventAgeLimit">나이제한:</label>
+                <input type="date" id="eventAgeLimit">
+            </div>
+            <div class="group">
+                <label for="eventLocation">모임장소*:</label>
+                <input type="text" id="eventLocation" required>
             </div>
             <button onclick="createEvent()">모임 생성</button>
         </form>
         
         <button onclick="deleteEvent()">모임 삭제</button>
         <button onclick="attendEvent()">모임 참석</button>
+        <script src="profile_edit.js"></script>
     </div>
 </body>
 </html>
