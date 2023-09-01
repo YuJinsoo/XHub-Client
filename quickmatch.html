@@ -21,8 +21,35 @@
                 <input type="text" id="eventName" required>
             </div>
             <div class="group">
-                <label for="eventDate">날짜:</label>
+                <label for="eventDate">나이제한:</label>
                 <input type="date" id="eventDate" required>
+            </div>
+            <div class="group">
+                <label for="eventDate">나이제한:</label>
+                <input type="date" id="eventDate" required>
+            </div>
+            <div class="group">
+                <label for="eventCategory">종목:</label>
+                <select name="category" id="eventCategory">
+                    <option value="M">남자만</option>
+                    <option value="W">여자만</option>
+                    <option value="X">모두다</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="eventGenderLimit">성별제한:</label>
+                <select name="genderlimit" id="eventGenderLimit">
+                    <option value="축구(풋살)">축구(풋살)</option>
+                    <option value="농구">농구</option>
+                    <option value="배트민턴">배트민턴</option>
+                    <option value="볼링">볼링</option>
+                    <option value="테니스">테니스</option>
+                    <option value="골프">골프</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="eventLocation">모임장소:</label>
+                <input type="text" id="eventLocation">
             </div>
             <button onclick="createEvent()">모임 생성</button>
         </form>
