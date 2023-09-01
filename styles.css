@@ -99,3 +99,51 @@ background-color: #0056b3;
 .join-btn, .leave-btn {
     margin-top: 10px;
 }
+
+/* profile_edit */
+#profileForm {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#profileForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#profileForm input, #profileForm select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* playerList */
+/* 추가: 플레이어 목록 스타일링 */
+#playerListContainer {
+    display: none;
+    list-style-type: none;  /* 목록 앞에 작은 원 형태를 없애줍니다 */
+    padding: 0;  /* 패딩을 0으로 설정 */
+    border: 1px solid #ccc;  /* 테두리를 추가 */
+    border-radius: 8px;  /* 테두리 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 그림자 효과 */
+    max-width: 600px;  /* 최대 너비 설정 */
+    margin: auto;  /* 중앙 정렬 */
+}
+
+#playerListContainer li {
+    background-color: #f9f9f9;  /* 배경색 설정 */
+    border-bottom: 1px solid #ccc;  /* 하단 테두리 */
+    padding: 10px;  /* 패딩 설정 */
+    text-align: left;  /* 텍스트 왼쪽 정렬 */
+}
+
+#playerListContainer li:last-child {
+    border-bottom: none;  /* 마지막 아이템에는 하단 테두리를 없애줍니다 */
+}
+
+#playerListContainer li:hover {
+    background-color: #eee;  /* 마우스 오버시 배경색 변경 */
+}
