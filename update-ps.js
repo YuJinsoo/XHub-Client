@@ -4,7 +4,7 @@ document.getElementById('passwordChangeForm').addEventListener('submit', async f
         const currentPassword = document.getElementById('currentPassword').value;
         const newPassword = document.getElementById('newPassword').value;
 
-        const response = await axios.put('http://127.0.0.1:8000/player/update/ps/', {
+        const response = await axios.put('http://54.248.217.183/player/update/ps/', {
             current_password: currentPassword,
             new_password: newPassword
         }, {

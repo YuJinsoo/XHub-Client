@@ -30,14 +30,27 @@ function populateMeetingList(data) {
         joinBtn.className = 'join-btn';
         joinBtn.textContent = '참석하기';
         joinBtn.onclick = function() {
-            // 참석 로직 구현
-        }
+            axios.post('http://54.248.217.183/quickmatch/join/', { meeting_id: meeting.id })
+            .then(response => {
+                if(response.data.success) {
+                    // 참석 버튼을 "참석중"으로 변경
+                    joinBtn.textContent = '참석중';
+                    joinBtn.disabled = true;
 
+                    // 모든 다른 "참석하기" 버튼 숨기기
+                    const allJoinButtons = document.querySelectorAll('.join-btn');
+                    allJoinButtons.forEach(btn => {
+                        if (btn !== joinBtn) btn.style.display = 'none';
+                    });
+                }
+            })
+            .catch(error => console.error('Error joining meeting:', error));
+        }
         const detailBtn = document.createElement('button');
         detailBtn.className = 'detail-btn';
         detailBtn.textContent = '상세보기';
         detailBtn.onclick = function() {
-            // 떠나기 로직 구현
+            // 상세보기 로직 구현
         }
 
         meetingItem.appendChild(title);
