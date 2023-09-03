@@ -1,13 +1,14 @@
 window.onload = function() {
     // 미팅 전체 목록 가져오기
-    axios.get('http://54.248.217.183/quickmatch/list/')
+    // localhost
+    axios.get('http://localhost/quickmatch/list/')
         .then(response => populateMeetingList(response.data))
         .catch(error => console.error('Error fetching meetings:', error));
 
     // 검색 버튼에 이벤트 리스너 추가
     document.getElementById('searchBtn').addEventListener('click', function() {
         const searchTerm = document.getElementById('searchInput').value;
-        axios.get('http://54.248.217.183/quickmatch/search/', { params: { search: searchTerm } })
+        axios.get('http://localhost/quickmatch/search/', { params: { search: searchTerm } })
             .then(response => populateMeetingList(response.data))
             .catch(error => console.error('Error fetching meetings:', error));
     });
@@ -30,7 +31,7 @@ function populateMeetingList(data) {
         joinBtn.className = 'join-btn';
         joinBtn.textContent = '참석하기';
         joinBtn.onclick = function() {
-            axios.post('http://54.248.217.183/quickmatch/join/', { meeting_id: meeting.id })
+            axios.post('http://localhost/quickmatch/join/', { meeting_id: meeting.id })
             .then(response => {
                 if(response.data.success) {
                     // 참석 버튼을 "참석중"으로 변경
@@ -51,6 +52,7 @@ function populateMeetingList(data) {
         detailBtn.textContent = '상세보기';
         detailBtn.onclick = function() {
             // 상세보기 로직 구현
+            window.location.href = 'quickmatch_detail.html?meeting_id='+ encodeURIComponent(meeting.id)
         }
 
         meetingItem.appendChild(title);
