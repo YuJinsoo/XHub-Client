@@ -8,7 +8,7 @@ async function createGroup() {
   const groupName = document.getElementById('groupName').value;
 
   try {
-    const response = await axios.post('/api/group', {
+    const response = await axios.post('http://54.248.217.183/board/write/', {
       name: groupName
     });
 
@@ -28,7 +28,7 @@ async function deleteGroup() {
   const groupName = document.getElementById('groupName').value;
 
   try {
-    const response = await axios.delete(`/api/group/${groupName}`);
+    const response = await axios.delete(`http://54.248.217.183/board/${groupName}/delete/`);
 
     if (response.status === 200) {
       alert('그룹이 성공적으로 삭제되었습니다.');

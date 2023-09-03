@@ -9,7 +9,7 @@ const eventName = document.getElementById('eventName').value;
 const eventDate = document.getElementById('eventDate').value;
 
 try {
-    const response = await axios.post('/api/events', {
+    const response = await axios.post('http://54.248.217.183/quickmatch/create/', {
     name: eventName,
     date: eventDate
     });
@@ -30,7 +30,7 @@ async function deleteEvent() {
 const eventName = document.getElementById('eventName').value;
 
 try {
-    const response = await axios.delete(`/api/events/${eventName}`);
+    const response = await axios.delete(`http://54.248.217.183/quickmatch/${eventName}/delete/`);
 
     if (response.status === 200) {
     alert('모임이 성공적으로 삭제되었습니다.');
@@ -48,7 +48,7 @@ async function attendEvent() {
 const eventName = document.getElementById('eventName').value;
 
 try {
-    const response = await axios.post(`/api/events/${eventName}/attend`);
+    const response = await axios.post(`http://54.248.217.183/quickmatch/join/${eventName}/`);
 
     if (response.status === 200) {
     alert('모임 참석에 성공하였습니다.');
