@@ -1,5 +1,6 @@
 window.onload = function() {
     // 미팅 전체 목록 가져오기
+    // 54.248.217.183
     axios.get('http://54.248.217.183/quickmatch/list/')
         .then(response => populateMeetingList(response.data))
         .catch(error => console.error('Error fetching meetings:', error));
@@ -51,6 +52,7 @@ function populateMeetingList(data) {
         detailBtn.textContent = '상세보기';
         detailBtn.onclick = function() {
             // 상세보기 로직 구현
+            window.location.href = 'quickmatch_detail.html?meeting_id='+ encodeURIComponent(meeting.id)
         }
 
         meetingItem.appendChild(title);

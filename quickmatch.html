@@ -9,24 +9,31 @@
         form { margin-bottom: 20px; }
         .group { margin-bottom: 10px; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+    <div id="navbar">
+        <a href="/">홈</a>
+        <a href="./meeting-list.html" onclick="showSection('quickmatch')">모임 목록</a>
+        <input type="text" id="searchInput" placeholder="Search for a meeting...">
+        <button id="searchBtn">Search</button>
+    </div>
     <!-- 퀵매치 섹션 -->
     <div id="quickmatch" class="section">
-        <h2>Quicmmatch (퀵매치)</h2>
+        <h2>퀵매치 생성하기 QuickMatch</h2>
         <form>
             <div class="group">
-                <label for="eventName">모임이름*:</label>
-                <input type="text" id="eventName" required>
+                <label for="eventTitle">모임이름*:</label>
+                <input type="text" id="eventTitle" required>
             </div>
             <div class="group">
                 <label for="eventDescription">모임설명*:</label>
                 <input type="textarea" id="eventDescription" required>
             </div>
             <div class="group">
-                <label for="eventCategory">종목:</label>
-                <select name="category" id="eventGenderLimit">
+                <label>종목:</label>
+                <select name="category" id="selectCategory">
                     <option value="축구(풋살)">축구(풋살)</option>
                     <option value="농구">농구</option>
                     <option value="배트민턴">배트민턴</option>
@@ -36,8 +43,8 @@
                 </select>
             </div>
             <div class="group">
-                <label for="eventGenderLimit">성별제한:</label>
-                <select name="genderlimit" id="eventGenderLimit">
+                <label>성별제한:</label>
+                <select name="genderlimit" id="selectGenderLimit">
                     <option value="M">남자만</option>
                     <option value="W">여자만</option>
                     <option value="X">모두다</option>
@@ -51,12 +58,17 @@
                 <label for="eventLocation">모임장소*:</label>
                 <input type="text" id="eventLocation" required>
             </div>
-            <button onclick="createEvent()">모임 생성</button>
+            <div class="group">
+                <label for="eventMax">최대인원수:</label>
+                <input type="text" id="eventMax" >
+            </div>
+
+            <button type="button" onclick="createMeeting()">모임 생성</button>
         </form>
         
-        <button onclick="deleteEvent()">모임 삭제</button>
-        <button onclick="attendEvent()">모임 참석</button>
-        <script src="profile_edit.js"></script>
+        <!-- <button onclick="deleteEvent()">모임 삭제</button> -->
+        <!-- < onclick="attendEvent()">모임 참석</button> -->
+        <script src="quickmatch.js"></script>
     </div>
 </body>
 </html>
