@@ -1,42 +1,27 @@
-// 페이지가 로드될 때 초기화 작업을 수행합니다.
-window.addEventListener('load', function() {
-    // 초기 설정 코드 (예: 로그인 상태 확인, UI 초기화 등)
-  });
-  
-// 그룹 생성 함수
-async function createGroup() {
-  const groupName = document.getElementById('groupName').value;
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("submitButton").addEventListener("click", submitPost);
+});
 
-  try {
-    const response = await axios.post('http://localhost/board/write/', {
-      name: groupName
-    });
+async function submitPost() {
+    const postContent = document.getElementById("postContent").value;
+    const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
-    if (response.status === 200) {
-      alert('그룹이 성공적으로 생성되었습니다.');
-      // UI 업데이트 또는 추가 작업
-    } else {
-      alert('그룹 생성에 실패하였습니다.');
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/board/write/', {
+            gather_title: "Your title here",
+            context: postContent
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
+            }
+        });
+
+        if (response.status === 201) { // 201 Created
+            alert('게시글이 성공적으로 작성되었습니다.');
+            window.location.href = 'board.html';
+        }
+    } catch (error) {
+        console.error('게시글 작성에 실패했습니다.', error);
+        console.error('Server Response: ', error.response.data);  // 이 부분 추가
     }
-  } catch (error) {
-    alert('그룹 생성에 실패하였습니다.');
-  }
-}
-
-// 그룹 삭제 함수
-async function deleteGroup() {
-  const groupName = document.getElementById('groupName').value;
-
-  try {
-    const response = await axios.delete(`http://localhost/board/${groupName}/delete/`);
-
-    if (response.status === 200) {
-      alert('그룹이 성공적으로 삭제되었습니다.');
-      // UI 업데이트 또는 추가 작업
-    } else {
-      alert('그룹 삭제에 실패하였습니다.');
-    }
-  } catch (error) {
-    alert('그룹 삭제에 실패하였습니다.');
-  }
 }

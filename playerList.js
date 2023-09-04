@@ -23,10 +23,11 @@ async function fetchUserList() {
             listItem.textContent = `이메일: ${player.email}, 닉네임: ${player.nickname}, 연령: ${player.age}, 성별: ${player.gender}`;
             playerListContainer.appendChild(listItem);
         });
+
+        // 플레이어 목록을 표시
+        playerListContainer.style.display = "block";
+
     } catch (error) {
         console.error('Failed to fetch player list:', error);
     }
 }
-
-// 페이지가 로딩되면 자동으로 플레이어 목록을 불러옵니다.
-window.addEventListener('load', fetchUserList);
