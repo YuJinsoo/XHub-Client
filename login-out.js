@@ -48,7 +48,7 @@ async function logout() {
   try {
       const response = await axios.delete('http://localhost/player/logout/', {
           headers: {
-              'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
       });
 

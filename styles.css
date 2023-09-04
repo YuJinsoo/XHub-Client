@@ -147,3 +147,24 @@ background-color: #0056b3;
 #playerListContainer li:hover {
     background-color: #eee;  /* 마우스 오버시 배경색 변경 */
 }
+
+/* board */
+#board {
+    margin: 20px;
+}
+
+#boardForm textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+#postList {
+    margin-top: 20px;
+}
+
+.postItem {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
