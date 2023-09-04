@@ -52,7 +52,7 @@ function populateMeetingList(data) {
         detailBtn.textContent = '상세보기';
         detailBtn.onclick = function() {
             // 상세보기 로직 구현
-            window.location.href = 'quickmatch_detail.html?meeting_id='+ encodeURIComponent(meeting.id)
+            window.location.href = 'quickmatch-detail.html?meeting_id='+ encodeURIComponent(meeting.id)
         }
 
         meetingItem.appendChild(title);
