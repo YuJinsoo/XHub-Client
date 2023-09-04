@@ -1,5 +1,6 @@
 window.onload = function() {
     // 미팅 전체 목록 가져오기
+    // 54.248.217.183
     axios.get('http://54.248.217.183/quickmatch/list/')
         .then(response => populateMeetingList(response.data))
         .catch(error => console.error('Error fetching meetings:', error));
@@ -30,20 +31,34 @@ function populateMeetingList(data) {
         joinBtn.className = 'join-btn';
         joinBtn.textContent = '참석하기';
         joinBtn.onclick = function() {
-            // 참석 로직 구현
-        }
+            axios.post('http://54.248.217.183/quickmatch/join/', { meeting_id: meeting.id })
+            .then(response => {
+                if(response.data.success) {
+                    // 참석 버튼을 "참석중"으로 변경
+                    joinBtn.textContent = '참석중';
+                    joinBtn.disabled = true;
 
-        const leaveBtn = document.createElement('button');
-        leaveBtn.className = 'leave-btn';
-        leaveBtn.textContent = '떠나기';
-        leaveBtn.onclick = function() {
-            // 떠나기 로직 구현
+                    // 모든 다른 "참석하기" 버튼 숨기기
+                    const allJoinButtons = document.querySelectorAll('.join-btn');
+                    allJoinButtons.forEach(btn => {
+                        if (btn !== joinBtn) btn.style.display = 'none';
+                    });
+                }
+            })
+            .catch(error => console.error('Error joining meeting:', error));
+        }
+        const detailBtn = document.createElement('button');
+        detailBtn.className = 'detail-btn';
+        detailBtn.textContent = '상세보기';
+        detailBtn.onclick = function() {
+            // 상세보기 로직 구현
+            window.location.href = 'quickmatch_detail.html?meeting_id='+ encodeURIComponent(meeting.id)
         }
 
         meetingItem.appendChild(title);
         meetingItem.appendChild(description);
         meetingItem.appendChild(joinBtn);
-        meetingItem.appendChild(leaveBtn);
+        meetingItem.appendChild(detailBtn);
 
         meetingList.appendChild(meetingItem);
     });

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>퀵매치 - 운동 매칭 서비스</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* 간단한 스타일링 */
+        body { font-family: Arial, sans-serif; }
+        form { margin-bottom: 20px; }
+        .group { margin-bottom: 10px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+    <div id="navbar">
+        <a href="/">홈</a>
+        <a href="./meeting-list.html" onclick="showSection('quickmatch')">모임 목록</a>
+        <input type="text" id="searchInput" placeholder="Search for a meeting...">
+        <button id="searchBtn">Search</button>
+    </div>
+    <!-- 퀵매치 디테일 섹션 -->
+    <div id="quickmatch_detail" class="section">
+        <h2>퀵매치 상세내용</h2>
+        <div id="meeting_container" class="group">
+        </div>
+        <div id="button_group">
+            <button type="button" onclick="">모임참가</button>
+            <button type="button" onclick="">채팅참가</button>
+        </div>
+        <!-- <button onclick="deleteEvent()">모임 삭제</button> -->
+    </div>
+    <script src="quickmatch_detail.js"></script>
+</body>
+</html>

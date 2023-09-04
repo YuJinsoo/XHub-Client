@@ -11,7 +11,7 @@ async function addFriend(event) {
 
     try {
         // API 호출을 통해 친구 추가
-        const response = await axios.post('http://127.0.0.1:8000/player/add-friend/', {
+        const response = await axios.post('http://54.248.217.183/player/add-friend/', {
             email: friendEmail
         }, {
             headers: {
@@ -42,7 +42,7 @@ async function addFriend(event) {
 async function fetchFriendList() {
     try {
         // API 호출을 통해 친구 목록 조회
-        const response = await axios.get('http://127.0.0.1:8000/player/friends/', {
+        const response = await axios.get('http://54.248.217.183/player/friends/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
