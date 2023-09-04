@@ -1,6 +1,11 @@
-let currentMeetingId;
+// 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
+if (localStorage.getItem('accessToken')) {
+    isLoggedIn = true;
+  } else {
+    isLoggedIn = false;
+  }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function() {    
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
@@ -8,8 +13,6 @@ window.addEventListener('load', function() {
     axios.get(`http://localhost/quickmatch/${value}/detail/`)
     .then(response => {
         const responsedata = response.data;
-
-        currentMeetingId = responsedata.id; // 변수에 id 저장
 
         console.log('내 사용자 ID: ', responsedata.id);
         render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
@@ -127,15 +130,15 @@ async function deleteMeeting() {
 async function attendMeeting() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const eventName = urlParams.get('meeting_id'); // Get the meeting_id value from the URL
+    const value = urlParams.get('meeting_id'); // Get the meeting_id value from the URL
 
-    if (!eventName) {
+    if (!value) {
         alert('Failed to retrieve meeting ID from the URL.');
         return;
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/join/${eventName}/`, {}, {
+        const response = await axios.post(`http://localhost/quickmatch/join/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -146,7 +149,7 @@ async function attendMeeting() {
             document.getElementById('leave_btn').style.display = 'block';
             alert('모임 참석에 성공하였습니다.');
             
-            return axios.get(`http://localhost/quickmatch/${eventName}/detail/`);
+            return axios.get(`http://localhost/quickmatch/${value}/detail/`);
         } else {
         alert('모임 참석에 실패하였습니다.');
         }
@@ -159,15 +162,15 @@ async function attendMeeting() {
 async function leaveMeeting() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const eventName = urlParams.get('meeting_id');
+    const value = urlParams.get('meeting_id');
 
-    if (!eventName) {
+    if (!value) {
         alert('URL에서 회의 ID를 가져오는 데 실패했습니다.');
         return;
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/leave/${eventName}/`, {}, {
+        const response = await axios.post(`http://localhost/quickmatch/leave/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -179,7 +182,7 @@ async function leaveMeeting() {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
 
-            return axios.get(`http://localhost/quickmatch/${eventName}/detail/`);
+            return axios.get(`http://localhost/quickmatch/${value}/detail/`);
         } else {
             alert('회의를 떠나는 데 실패했습니다.');
         }
