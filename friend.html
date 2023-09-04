@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>친구 관리 - 운동 매칭 서비스</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+    <div id="addFriendSection" class="section">
+        <h2>친구 추가</h2>
+        <form id="addFriendForm">
+            <label for="friendEmail">친구의 이메일:</label>
+            <input type="text" id="friendEmail" name="friendEmail">
+            <button type="submit">친구 추가</button>
+            <p>참고: 아래로 스크롤 해서 친구 목록 조회.</p>
+        </form>
+    </div>
+    <div id="friendListSection" class="section">
+        <h2>친구 목록</h2>
+        <ul id="friendListContainer">
+            <!-- 여기에 친구 목록이 자동으로 추가됩니다. -->
+        </ul>
+    </div>
+    <button onclick="location.href='index.html'">돌아가기</button>
+    <script src="friend.js"></script>
+</body>
+</html>

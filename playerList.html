@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>운동 매칭 서비스</title>
+    <title>운동 매칭 서비스 - 플레이어 목록</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <h1><a href="./index.html"></a>운동 매칭 서비스</h1>
+    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
 
     <!-- Navbar 상단 줄 메뉴 링크 부분 -->
     <div id="navbar">
@@ -16,15 +15,22 @@
         <a id="profileBtn" href="./profile_edit.html">회원 정보수정</a>
         <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
         <a href="./meeting-list.html">퀵매치</a>
-        <a href="./board.html" onclick="showSection('board')">게시판</a>
+        <a href="./group.html" onclick="showSection('group')">게시판</a>
         <a href="./playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
         <a href="./friend.html" onclick="showSection('playerList')">친구 목록</a>
     </div>
 
+    <!-- 회원 목록 부분 -->
+    <div id="playerListSection" class="section">
+        <h2>플레이어 목록</h2>
+        <button onclick="fetchUserList()">플레이어 목록 불러오기</button>
+        <ul id="playerListContainer">
+            <!-- 여기에 플레이어 목록이 자동으로 추가됩니다. -->
+        </ul>
+    </div>
+
     <!-- 자바스크립트 import 목록 -->
     <script src="login-out.js"></script>
-    <script src="index.js"></script>
     <script src="playerList.js"></script>
-    <script src="friend.js"></script>
 </body>
 </html>
