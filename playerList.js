@@ -2,7 +2,7 @@
 async function fetchUserList() {
     try {
         // API 호출
-        const response = await axios.get('http://54.248.217.183/player/search/', {
+        const response = await axios.get('http://localhost/player/search/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }

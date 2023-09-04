@@ -17,7 +17,7 @@
     <h1><a href="./index.html">운동 매칭 서비스</a></h1>
     <div id="navbar">
         <a href="/">홈</a>
-        <a href="./meeting-list.html" onclick="showSection('quickmatch')">모임 목록</a>
+        <a href="./quickmatch-list.html" onclick="showSection('quickmatch')">모임 목록</a>
         <input type="text" id="searchInput" placeholder="Search for a meeting...">
         <button id="searchBtn">Search</button>
     </div>
@@ -26,8 +26,13 @@
         <h2>퀵매치 상세내용</h2>
         <div id="meeting_container" class="group">
         </div>
+
+
         <div id="button_group">
-            <button type="button" onclick="">모임참가</button>
+            <div id="button_group">
+                <button id="attend_btn" onclick="attendMeeting()">모임 참여</button>
+                <button id="leave_btn" onclick="leaveMeeting()" style="display: none;">모임 떠나기</button>
+            </div>            
             <button type="button" onclick="">채팅참가</button>
         </div>
         <!-- <button onclick="deleteEvent()">모임 삭제</button> -->

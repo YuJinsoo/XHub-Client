@@ -1,43 +1,32 @@
-// 페이지가 로드될 때 초기화 작업을 수행합니다.
+let currentMeetingId;
+
 window.addEventListener('load', function() {
-    // 초기 설정 코드 (예: 로그인 상태 확인, UI 초기화 등)
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
 
-    axios.get(`http://54.248.217.183/quickmatch/${value}/detail/`)
-    .then(response =>{
-        // console.log(response);
-        // console.log(response.data);
-        render_details(response.data);
-    })
-    .catch(error =>{
-        console.error('에러가 발생했습니다', error);
-    })
-
-    axios.get(`http://54.248.217.183/player/check/email/`, {
-        headers : {
-            'Authorization' : `Bearer ${this.localStorage.getItem('accessToken')}`
-        }
-    })
-    .then(response =>{
+    axios.get(`http://localhost/quickmatch/${value}/detail/`)
+    .then(response => {
         const responsedata = response.data;
-        const mc = document.getElementById('meeting_container')
+
+        currentMeetingId = responsedata.id; // 변수에 id 저장
+
+        console.log('내 사용자 ID: ', responsedata.id);
+        render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
+
+        const mc = document.getElementById('meeting_container');
         const mcul = mc.querySelector('ul');
         const liel = mcul.querySelectorAll('li');
-        console.log('my user id: ', responsedata.id);
-
+        
         liel.forEach(function(li){
-            // console.log(li.textContent);
-            let id_number = ''
-            if (li.textContent.includes('organizer')){
+            let id_number = '';
+            if (li.textContent.includes('organizer')) {
                 id_number = li.textContent.split(' : ')[1];
-                console.log('author id: ', id_number);
+                console.log('작성자 ID: ', id_number);
             }
 
-            // 로그인유저와 작성가 같을 때만 삭제버튼 보이도록
+            // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
             if (id_number === String(responsedata.id)){
-                
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = '미팅 삭제';
                 deleteBtn.type = 'button';
@@ -45,52 +34,63 @@ window.addEventListener('load', function() {
                 document.querySelector('#button_group').append(deleteBtn);
             }
         });
-        // if (response.data.id === ){
 
-        // }
-    })
-    .catch(error =>{
-        console.error('에러가 발생했습니다', error);
-    })
+        // 멤버십을 확인하여 어떤 버튼을 표시할지 결정
+        return axios.get(`http://localhost/quickmatch/is_member/${value}/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
 
+    })
+    .then(response => {
+        if(response.data.is_member) {
+            document.getElementById('attend_btn').style.display = 'none';
+            document.getElementById('leave_btn').style.display = 'block';
+        } else {
+            document.getElementById('attend_btn').style.display = 'block';
+            document.getElementById('leave_btn').style.display = 'none';
+        }
+    })
+    .catch(error => {
+        console.error('오류 발생', error);
+    });
 });
 
 function render_details(data){
     const detail_container = document.getElementById('meeting_container');
-    const unorderd_li = document.createElement('ul');
+    const unordered_li = document.createElement('ul');
 
-    // 표현하고싶은 데이터 리스트
-    const list = ['title', 'organizer', 'description', 'age_limit', 'created_at', 'category', 'gender_limit', 'status', 'location', 'current_participants ', 'max_participants','meeting_member']
+    const list = ['title', 'organizer', 'description', 'age_limit', 'created_at', 'category', 'gender_limit', 'status', 'location', 'current_participants', 'max_participants', 'meeting_member']
 
     for (let key of list){
-        let add = document.createElement('li');
-        add.classList.add('group')
+        const add = document.createElement('li');
+        add.classList.add('group');
 
         if(data.hasOwnProperty(key)){
-
             let value = data[key];
-            
-            // key === meeting_member
-            if (Array.isArray(value)){
-                // value = value.join(', ');
+
+            // meeting_member의 경우, 이메일 또는 닉네임을 표시합니다.
+            if (key === 'meeting_member') {
                 let temp = '';
-                for (let tmp of value){
-                    // console.log(tmp);
-                    // console.log(tmp.email);
-                    // console.log(tmp.nickname);
-                    temp = temp + tmp.email + ', ';
+                for (let member of value){
+                    temp += member.email || member.nickname;
+                    temp += ', ';
                 }
+                temp = temp.slice(0, -2); // 마지막 쉼표와 공백 제거
                 add.textContent = `${key} : ${temp}`;
-            }
-            else{
+            } 
+            // current_participants의 경우, 참여자 수를 표시합니다.
+            else if (key === 'current_participants' && Array.isArray(value)) {
+                add.textContent = `${key} : ${value.length}`;
+            } 
+            else {
                 add.textContent = `${key} : ${value}`;
             }
+            unordered_li.append(add);
         }
-
-        unorderd_li.append(add);
     }
-
-    detail_container.append(unorderd_li);
+    detail_container.append(unordered_li);
 }
 
 
@@ -104,7 +104,7 @@ async function deleteMeeting() {
 
     // 삭제 요청
     try {
-        const response = await axios.post(`http://54.248.217.183/quickmatch/${value}/delete/`, {}, {
+        const response = await axios.post(`http://localhost/quickmatch/${value}/delete/`, {}, {
             headers : {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -125,18 +125,83 @@ async function deleteMeeting() {
 
 // 모임 참석 함수
 async function attendMeeting() {
-const eventName = document.getElementById('eventName').value;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const eventName = urlParams.get('meeting_id'); // Get the meeting_id value from the URL
 
-try {
-    const response = await axios.post(`/api/events/${eventName}/attend`);
-
-    if (response.status === 200) {
-    alert('모임 참석에 성공하였습니다.');
-    // UI 업데이트 또는 추가 작업
-    } else {
-    alert('모임 참석에 실패하였습니다.');
+    if (!eventName) {
+        alert('Failed to retrieve meeting ID from the URL.');
+        return;
     }
-} catch (error) {
-    alert('모임 참석에 실패하였습니다.');
+
+    try {
+        const response = await axios.post(`http://localhost/quickmatch/join/${eventName}/`, {}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+
+        if (response.status === 200) {
+            document.getElementById('attend_btn').style.display = 'none';
+            document.getElementById('leave_btn').style.display = 'block';
+            alert('모임 참석에 성공하였습니다.');
+            
+            return axios.get(`http://localhost/quickmatch/${eventName}/detail/`);
+        } else {
+        alert('모임 참석에 실패하였습니다.');
+        }
+    } catch (error) {
+        alert('모임 참석에 실패하였습니다.');
+    }
 }
+
+
+async function leaveMeeting() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const eventName = urlParams.get('meeting_id');
+
+    if (!eventName) {
+        alert('URL에서 회의 ID를 가져오는 데 실패했습니다.');
+        return;
+    }
+
+    try {
+        const response = await axios.post(`http://localhost/quickmatch/leave/${eventName}/`, {}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+
+        if (response.status === 200) {
+            alert('회의를 성공적으로 떠났습니다.');
+            // 성공적으로 회의를 떠난 후 참가 버튼을 표시하고 나가기 버튼을 숨깁니다.
+            document.getElementById('attend_btn').style.display = 'block';
+            document.getElementById('leave_btn').style.display = 'none';
+
+            return axios.get(`http://localhost/quickmatch/${eventName}/detail/`);
+        } else {
+            alert('회의를 떠나는 데 실패했습니다.');
+        }
+    } catch (error) {
+        alert('회의를 떠나는 데 실패했습니다.');
+    }
+}
+
+
+function updateMeetingMembers(memberData) {
+    // 'meeting_member'를 포함하는 목록 항목을 찾습니다.
+    const liElements = document.querySelectorAll('#meeting_container ul li');
+    for (let li of liElements) {
+        if (li.textContent.includes('meeting_member')) {
+            let updatedMembers = '';
+            for (let member of memberData) {
+                updatedMembers += member.email || member.nickname;
+                updatedMembers += ', ';
+            }
+            updatedMembers = updatedMembers.slice(0, -2); // 마지막 쉼표와 공백 제거
+            li.textContent = `meeting_member : ${updatedMembers}`;
+            break;
+        }
+    }
 }

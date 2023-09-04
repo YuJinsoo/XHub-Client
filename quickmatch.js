@@ -53,7 +53,8 @@ async function createMeeting() {
         formData.append('location', eventLocation);
         formData.append('max_participants', eventMax);
 
-        const response = await axios.post('http://54.248.217.183/quickmatch/create/', data, {
+
+        const response = await axios.post('http://localhost/quickmatch/create/', data, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -62,7 +63,7 @@ async function createMeeting() {
         
         if (response.status === 200) {
         alert('모임이 성공적으로 생성되었습니다.');
-        window.location.href = 'meeting-list.html';
+        window.location.href = 'quickmatch-list.html';
         } else {
         console.log(response.error)
         alert('모임 생성에 실패하였습니다.111');

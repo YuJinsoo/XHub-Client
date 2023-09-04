@@ -24,5 +24,4 @@ async function submitPost() {
         console.error('게시글 작성에 실패했습니다.', error);
         console.error('Server Response: ', error.response.data);  // 이 부분 추가
     }
-    
 }
