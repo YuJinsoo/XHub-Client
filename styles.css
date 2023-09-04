@@ -1,6 +1,24 @@
-/* 간단한 스타일링 */
-body { 
-    font-family: Arial, sans-serif; 
+/* 메인 body */
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background-color: #343a40;
+    color: #ffffff;
+    margin: 0;
+    padding: 1em;
+    text-align: center;
+}
+
+.container {
+    margin: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 form { 
@@ -25,16 +43,20 @@ form {
 
 /* Navbar */
 #navbar {
-    background-color: #333;
+    background-color: #1b1e21;
     color: white;
+    padding: 1em 0;
     text-align: center;
-    padding: 1em;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 #navbar a {
-margin: 0 15px;
-color: white;
-text-decoration: none;
+    margin: 0 15px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 /* Section Headers */
