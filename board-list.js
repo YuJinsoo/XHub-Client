@@ -117,6 +117,7 @@ function populatePostlist(data){
         btn.onclick = function(e, post_id = post.id){
             // 상세 페이지 로직
             console.log('get details', post_id);
+            window.location.href='board-detail.html?post_id='+encodeURIComponent(post.id);
         };  
 
         postItem.append(title);
