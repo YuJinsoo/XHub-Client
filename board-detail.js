@@ -41,6 +41,28 @@ function updateButtonVisibility() {
 function render_post_details(data){
     console.log(data);
     // 데이터로 내용 추가하기
+    const detail_container = document.getElementById('PostContainer');
+    console.log(data.context);
+    console.log(data.created_at);
+    console.log(data.updated_at);
+    console.log(data.gather_title);
+    console.log(data.writer);
+
+    const list = ['gather_title', 'writer', 'like', 'created_at', 'updated_at', 'img', 'context']
+
+    for (let key of list){
+        const newrow = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+
+        cell1.textContent = key;
+        cell2.textContent = data[key];
+
+        newrow.appendChild(cell1);
+        newrow.appendChild(cell2);
+        detail_container.appendChild(newrow);
+    }
+
 }
 
 
@@ -74,4 +96,5 @@ async function loadPosts() {
         console.error('게시글을 불러오는 데 실패했습니다.', error);
     }
 }
+
 

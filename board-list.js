@@ -71,7 +71,6 @@ async function loadPosts() {
 }
 
 
-
 function prevPage() {
     if (currentPage > 1) {
         currentPage--;
@@ -108,7 +107,8 @@ function populatePostlist(data){
         time.textContent = post.created_at;
 
         const content = document.createElement('p');
-        content.textContent = post.context;
+        // content.textContent = post.context;
+        content.textContent = post.context.substr(0, 5) + ' ...'
 
         const btn = document.createElement('button');
         btn.textContent='보기'
@@ -125,9 +125,6 @@ function populatePostlist(data){
         postItem.append(time);
         postItem.append(content);
         postItem.append(btn);
-
-        console.log(post.context);
-        console.log(post.context.substr(0, 10));
 
         postList.append(postItem);
 
