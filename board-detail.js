@@ -62,7 +62,6 @@ function render_post_details(data){
         newrow.appendChild(cell2);
         detail_container.appendChild(newrow);
     }
-
 }
 
 

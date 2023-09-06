@@ -91,6 +91,8 @@ width: 200px;
     align-items: center;
     flex-direction: column;
     height: 100vh;  /* 100% of the viewport height */
+    margin-top: 100px;
+    margin-bottom: 50px;
 }
 
 /* Buttons */
@@ -194,4 +196,45 @@ background-color: #0056b3;
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0;
+}
+
+/* MeetingForm */
+#MeetingForm {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 50%;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+}
+
+#MeetingForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#MeetingForm input, #MeetingForm select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* boardForm */
+#boardForm {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 50%;
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+}
+#boardForm label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#boardForm input, #boardForm select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
 }
