@@ -7,8 +7,8 @@ async function submitPost() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.post('http://127.0.0.1:8000/board/write/', {
-            gather_title: "Your title here",
+        const response = await axios.post('http://localhost/board/write/', {
+            gather_title: document.getElementById('postTitle').value,
             context: postContent
         }, {
             headers: {
@@ -25,3 +25,4 @@ async function submitPost() {
         console.error('Server Response: ', error.response.data);  // 이 부분 추가
     }
 }
+

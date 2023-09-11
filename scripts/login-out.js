@@ -81,7 +81,7 @@ async function login() {
           isLoggedIn = true;
           updateButtonVisibility();
           alert('로그인 성공');
-          document.location.href = 'index.html';
+          document.location.href = '../index.html';
       } else {
           alert('로그인 실패');
       }

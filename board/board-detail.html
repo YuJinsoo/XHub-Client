@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>친구 관리 - 운동 매칭 서비스</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+
+    <div id="navbar">
+        <a id="loginBtn" href="./login.html" onclick="showSection('login')">로그인</a>
+        <a id="signupBtn" href="./register.html" onclick="showSection('signup')">회원가입</a>
+        <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
+        <a href="./quickmatch-list.html">퀵매치</a>
+        <a href="./board.html" onclick="showSection('readBoard')">게시판</a>
+        <a href="./playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
+        <a href="./friend.html" onclick="showSection('playerList')">친구 목록</a>
+    </div>
+
+    <!-- 게시글 목록 및 조회 섹션 -->
+    <div id="PostDetail" class="section">
+        <h2>블로그 디테일 페이지</h2>
+        
+        <!-- 게시글 내용 -->
+        <table id="PostTable">
+            <tbody id="PostContainer">
+                <!-- 여기에 JavaScript로 생성될 테이블 내용이 들어갑니다. -->
+            </tbody>
+        </table>
+        <div>
+            <button onclick="location.href='board.html'">돌아가기</button>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="board-detail.js"></script>
+</body>
+</html>
