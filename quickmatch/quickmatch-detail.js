@@ -1,9 +1,9 @@
 // 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
 if (localStorage.getItem('accessToken')) {
     isLoggedIn = true;
-  } else {
+} else {
     isLoggedIn = false;
-  }
+}
 
 window.addEventListener('load', function() {    
     const queryString = window.location.search;
@@ -62,38 +62,53 @@ window.addEventListener('load', function() {
 
 function render_details(data){
     const detail_container = document.getElementById('meeting_container');
-    const unordered_li = document.createElement('ul');
 
-    const list = ['title', 'organizer', 'description', 'age_limit', 'created_at', 'category', 'gender_limit', 'status', 'location', 'current_participants', 'max_participants', 'meeting_member']
+    // status와 created_at
+    const statusCreatedAtDiv = document.createElement('div');
+    statusCreatedAtDiv.textContent = `${data.status} ${data.created_at.split("T")[0]}`;
+    detail_container.appendChild(statusCreatedAtDiv);
 
-    for (let key of list){
-        const add = document.createElement('li');
-        add.classList.add('group');
+    // title, current_participants, max_participants 및 organizer
+    const titleParticipantsDiv = document.createElement('div');
+    titleParticipantsDiv.textContent = `${data.title} [${data.meeting_member.length || 0}/${data.max_participants}] ${data.organizer}`;
+    detail_container.appendChild(titleParticipantsDiv);
 
-        if(data.hasOwnProperty(key)){
-            let value = data[key];
+    // description
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.textContent = data.description;
+    detail_container.appendChild(descriptionDiv);
 
-            // meeting_member의 경우, 이메일 또는 닉네임을 표시합니다.
-            if (key === 'meeting_member') {
-                let temp = '';
-                for (let member of value){
-                    temp += member.email || member.nickname;
-                    temp += ', ';
-                }
-                temp = temp.slice(0, -2); // 마지막 쉼표와 공백 제거
-                add.textContent = `${key} : ${temp}`;
-            } 
-            // current_participants의 경우, 참여자 수를 표시합니다.
-            else if (key === 'current_participants' && Array.isArray(value)) {
-                add.textContent = `${key} : ${value.length}`;
-            } 
-            else {
-                add.textContent = `${key} : ${value}`;
-            }
-            unordered_li.append(add);
-        }
+    // category, gender_limit 및 location
+    const catGenderLocDiv = document.createElement('div');
+    catGenderLocDiv.classList.add('category-location');
+
+    const categorySpan = document.createElement('span');
+    categorySpan.className = 'category-btn';
+    categorySpan.textContent = data.category;
+    catGenderLocDiv.appendChild(categorySpan);
+
+    const genderLimitSpan = document.createElement('span');
+    genderLimitSpan.className = 'gender-limit-btn';
+    genderLimitSpan.textContent = data.gender_limit;
+    catGenderLocDiv.appendChild(genderLimitSpan);
+
+    const locationSpan = document.createElement('span');
+    locationSpan.className = 'location-btn';
+    locationSpan.textContent = data.location;
+    catGenderLocDiv.appendChild(locationSpan);
+
+    detail_container.appendChild(catGenderLocDiv);
+
+    // meeting members
+    const membersDiv = document.createElement('div');
+    for (let member of data.meeting_member) {
+        const memberSpan = document.createElement('span');
+        const displayName = member.nickname || member.email;
+        memberSpan.textContent = `${displayName} : (${member.position_display}) (${member.activity_point})`;
+        membersDiv.appendChild(memberSpan);
+        console.log(data.meeting_member);
     }
-    detail_container.append(unordered_li);
+    detail_container.appendChild(membersDiv);
 }
 
 

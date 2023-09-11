@@ -148,6 +148,29 @@ background-color: #0056b3;
 }
 
 
+/* meeting-detail */
+.category-btn, .gender-limit-btn, .location-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: 2px solid #333;
+    box-shadow: 3px 3px 3px #aaa;
+    transition: 0.2s;
+}
+.category-btn:hover, .gender-limit-btn:hover, .location-btn:hover {
+    box-shadow: 1px 1px 1px #aaa;
+    transform: translate(2px, 2px);
+}
+
+/* members 스타일링 */
+#meeting_container div span {
+    display: block;
+    margin: 5px 0;
+}
+
+
+
+
 /* profile_edit */
 #profileForm {
     border: 1px solid #ccc;
