@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>그룹 - 운동 매칭 서비스</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         /* 간단한 스타일링 */
@@ -11,8 +11,16 @@
         .group { margin-bottom: 10px; }
     </style>
 </head>
-<body>  
-    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+<body>
+    <h1><a href="../index.html">운동 매칭 서비스</a></h1>
+    <!-- Navbar 상단 줄 메뉴 링크 부분 -->
+    <div id="navbar">
+        <a id="loginBtn" href="../auth/login.html" onclick="showSection('login')">로그인</a>
+        <a href="../quickmatch/quickmatch-list.html">퀵매치</a>
+        <a href="../board/board.html" onclick="showSection('readBoard')">게시판</a>
+        <a href="../playerList/playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
+        <a href="../friend/friend.html" onclick="showSection('playerList')">친구 목록</a>
+    </div>
     <!-- 회원가입 섹션 -->
     <div id="signup" class="section">
         <h2>회원가입</h2>
@@ -26,9 +34,10 @@
                 <input type="password" id="signupPassword" required>
             </div>
             <button type="button" onclick="signup()">회원가입</button>
+            <button onclick="location.href='../index.html'">돌아가기</button>
         </form>
     </div>
-    <button onclick="location.href='index.html'">돌아가기</button>
-    <script src="register.js"></script>
+    
+    <script src="../scripts/register.js"></script>
 </body>
 </html>
