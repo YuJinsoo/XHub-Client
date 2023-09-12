@@ -239,3 +239,12 @@ background-color: #0056b3;
     padding: 10px;
     margin: 10px 0;
 }
+
+
+#chat_container{
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 20px 10px;
+    height : 300px;
+    width : 500px;
+}

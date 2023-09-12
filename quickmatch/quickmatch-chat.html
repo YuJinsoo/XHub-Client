@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>퀵매치 - 운동 매칭 서비스</title>
+    <title>퀵매치 - 운동 매칭 서비스 </title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
     <style>
         /* 간단한 스타일링 */
@@ -22,19 +22,22 @@
         <button id="searchBtn">Search</button>
     </div>
     <!-- 퀵매치 디테일 섹션 -->
-    <div id="quickmatch_detail" class="section">
-        <h2>퀵매치 상세내용</h2>
-        <div id="meeting_container" class="group">
+    <div id="chat_section" class="section">
+        <h2>퀵매치 채팅</h2>
+        <div id="chat_container" class="group">
             <!-- 퀵매치 내용 -->
+            <div>안녕하세요!</div>
         </div>
+        <input id="send_input" type="text">
+        <button id="send_btn" type="button" click="sendMessage()">보내기</button>
 
         <div id="button_group" class="btnGroup">
-            <button id="attend_btn" onclick="attendMeeting()">모임 참여</button>
-            <button id="leave_btn" onclick="leaveMeeting()">모임 떠나기</button>
-            <button id="chat_btn" onclick="getChat()">채팅</button>
+            <button id="leave_btn" onclick="leaveChating()">채팅 떠나기</button>
+            <button type="button" onclick="gotoDetailPage()">디테일페이지</button>
             <button type="button" onclick="location.href='./quickmatch-list.html'">목록</button>
         </div>
+        <!-- <button onclick="deleteEvent()">모임 삭제</button> -->
     </div>
-    <script src="quickmatch-detail.js"></script>
+    <script src="quickmatch-chat.js"></script>
 </body>
 </html>

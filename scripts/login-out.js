@@ -36,7 +36,7 @@ async function handleResponseError(error) {
     alert('세션이 만료되었습니다. 다시 로그인해주세요.');
     // 필요하다면 로그인 페이지로 리디렉션
     localStorage.removeItem('accessToken');
-    window.location.href = 'login.html';
+    window.location.href = 'auth/login.html';
   } else {
     console.log(error);
     alert('오류가 발생했습니다.');
