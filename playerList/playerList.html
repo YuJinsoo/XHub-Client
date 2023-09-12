@@ -2,22 +2,21 @@
 <html>
 <head>
     <title>운동 매칭 서비스 - 플레이어 목록</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <h1><a href="./index.html">운동 매칭 서비스</a></h1>
+    <h1><a href="../index.html">운동 매칭 서비스</a></h1>
 
     <!-- Navbar 상단 줄 메뉴 링크 부분 -->
     <div id="navbar">
-        <a id="loginBtn" href="./login.html" onclick="showSection('login')">로그인</a>
-        <a id="signupBtn" href="./register.html" onclick="showSection('signup')">회원가입</a>
-        <a id="profileBtn" href="./profile_edit.html">회원 정보수정</a>
+        <a id="loginBtn" href="../auth/login.html" onclick="showSection('login')">로그인</a>
+        <a id="signupBtn" href="../auth/register.html" onclick="showSection('signup')">회원가입</a>
+        <a id="profileBtn" href="../profile/profile_edit.html">회원 정보수정</a>
         <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
-        <a href="./quickmatch-list.html">퀵매치</a>
-        <a href="./board.html" onclick="showSection('readBoard')">게시판</a>
-        <a href="./playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
-        <a href="./friend.html" onclick="showSection('playerList')">친구 목록</a>
+        <a href="../quickmatch/quickmatch-list.html">퀵매치</a>
+        <a href="../board/board.html" onclick="showSection('readBoard')">게시판</a>
+        <a href="../friend/friend.html" onclick="showSection('playerList')">친구 목록</a>
     </div>
 
     <!-- 회원 목록 부분 -->

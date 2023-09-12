@@ -13,18 +13,25 @@
     <div id="navbar">
         <a id="loginBtn" href="auth/login.html" onclick="showSection('login')">로그인</a>
         <a id="signupBtn" href="auth/register.html" onclick="showSection('signup')">회원가입</a>
-        <a id="profileBtn" href="auth/signup.html">회원 정보수정</a>
+        <a id="profileBtn" href="profile/profile_edit.html">회원 정보수정</a>
         <a id="logoutBtn" href="#" onclick="logout()" style="display:none;">로그아웃</a>
         <a href="quickmatch/quickmatch-list.html">퀵매치</a>
-        <a href="./board.html" onclick="showSection('readBoard')">게시판</a>
+        <a href="board/board.html" onclick="showSection('readBoard')">게시판</a>
         <a href="playerList/playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
         <a href="friend/friend.html" onclick="showSection('playerList')">친구 목록</a>
     </div>
 
     <!-- 자바스크립트 import 목록 -->
-    <!-- <script src="login-out.js"></script>
-    <script src="index.js"></script>
-    <script src="playerList.js"></script>
-    <script src="friend.js"></script> -->
+    <script src="scripts/login-out.js"></script>
+    <script src="scripts/index.js"></script>
+    <script src="playerList/playerList.js"></script>
+    <script src="friend/friend.js"></script>
+    <script>
+        const btn = document.getElementById('loginBtn');
+
+        btn.addEventListener('click', function(){
+            
+        })
+    </script>
 </body>
 </html>
