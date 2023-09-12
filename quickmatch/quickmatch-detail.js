@@ -14,29 +14,15 @@ window.addEventListener('load', function() {
     .then(response => {
         const responsedata = response.data;
 
-        console.log('내 사용자 ID: ', responsedata.id);
         render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
 
-        const mc = document.getElementById('meeting_container');
-        const mcul = mc.querySelector('ul');
-        const liel = mcul.querySelectorAll('li');
-        
-        liel.forEach(function(li){
-            let id_number = '';
-            if (li.textContent.includes('organizer')) {
-                id_number = li.textContent.split(' : ')[1];
-                console.log('작성자 ID: ', id_number);
-            }
-
-            // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
-            if (id_number === String(responsedata.id)){
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = '미팅 삭제';
-                deleteBtn.type = 'button';
-                deleteBtn.onclick = deleteMeeting;
-                document.querySelector('#button_group').append(deleteBtn);
-            }
-        });
+        if (responsedata.user_id === responsedata.author_id) {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '회의 삭제';
+            deleteBtn.type = 'button';
+            deleteBtn.onclick = deleteMeeting;
+            document.querySelector('#button_group').append(deleteBtn);
+        }
 
         // 멤버십을 확인하여 어떤 버튼을 표시할지 결정
         return axios.get(`http://localhost/quickmatch/is_member/${value}/`, {
@@ -99,14 +85,22 @@ function render_details(data){
 
     detail_container.appendChild(catGenderLocDiv);
 
-    // meeting members
+    // 회의 참석자
     const membersDiv = document.createElement('div');
     for (let member of data.meeting_member) {
         const memberSpan = document.createElement('span');
         const displayName = member.nickname || member.email;
         memberSpan.textContent = `${displayName} : (${member.position_display}) (${member.activity_point})`;
+        
+        // 각 회원에 대한 평가 버튼 추가
+        const evaluateButton = document.createElement('button');
+        evaluateButton.textContent = '평가하기';
+        evaluateButton.addEventListener('click', function() {
+            evaluateMember(member.id, data.id);
+        });
+
         membersDiv.appendChild(memberSpan);
-        console.log(data.meeting_member);
+        membersDiv.appendChild(evaluateButton);
     }
     detail_container.appendChild(membersDiv);
 }
@@ -221,5 +215,26 @@ function updateMeetingMembers(memberData) {
             li.textContent = `meeting_member : ${updatedMembers}`;
             break;
         }
+    }
+}
+
+
+// 회원평가 처리 함수
+async function evaluateMember(memberId, meetingId) {
+    try {
+        const response = await axios.post(`http://localhost/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+
+        if (response.status === 200) {
+            alert('회원 평가에 성공했습니다.');
+        } else {
+            alert(response.data.status);
+        }
+    } catch (error) {
+        alert('회원 평가에 실패했습니다.');
+        console.error('오류가 발생했습니다.', error);
     }
 }
