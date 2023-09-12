@@ -10,34 +10,37 @@ window.addEventListener('load', function() {
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
 
+    // Promise 로 리턴됨 (email, id 정보 가지고있음)
+    const userInfo = axios.get(`http://localhost/player/check/email/`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    })
+    .then(response =>{
+        return response.data;
+    })
+    .catch(error=>{
+        console.error('에러발생 : ', error)
+        return error;
+    })
+
     axios.get(`http://localhost/quickmatch/${value}/detail/`)
     .then(response => {
         const responsedata = response.data;
-
         console.log('내 사용자 ID: ', responsedata.id);
         render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
 
-        const mc = document.getElementById('meeting_container');
-        const mcul = mc.querySelector('ul');
-        const liel = mcul.querySelectorAll('li');
-        
-        liel.forEach(function(li){
-            let id_number = '';
-            if (li.textContent.includes('organizer')) {
-                id_number = li.textContent.split(' : ')[1];
-                console.log('작성자 ID: ', id_number);
-            }
-
-            // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
-            if (id_number === String(responsedata.id)){
+        // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
+        userInfo.then(res =>{
+            if (res.id === responsedata.id){
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = '미팅 삭제';
                 deleteBtn.type = 'button';
                 deleteBtn.onclick = deleteMeeting;
                 document.querySelector('#button_group').append(deleteBtn);
             }
-        });
-
+        })
+        
         // 멤버십을 확인하여 어떤 버튼을 표시할지 결정
         return axios.get(`http://localhost/quickmatch/is_member/${value}/`, {
             headers: {
@@ -50,9 +53,11 @@ window.addEventListener('load', function() {
         if(response.data.is_member) {
             document.getElementById('attend_btn').style.display = 'none';
             document.getElementById('leave_btn').style.display = 'block';
+            document.getElementById('chat_btn').style.display = 'block';
         } else {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
+            document.getElementById('chat_btn').style.display = 'none';
         }
     })
     .catch(error => {
@@ -101,6 +106,7 @@ function render_details(data){
 
     // meeting members
     const membersDiv = document.createElement('div');
+    membersDiv.textContent='<퀵매치 멤버 목록>'
     for (let member of data.meeting_member) {
         const memberSpan = document.createElement('span');
         const displayName = member.nickname || member.email;
@@ -173,7 +179,7 @@ async function attendMeeting() {
     }
 }
 
-
+// 모임 떠나기
 async function leaveMeeting() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -222,4 +228,13 @@ function updateMeetingMembers(memberData) {
             break;
         }
     }
+}
+
+function getChat(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const value = urlParams.get('meeting_id');
+
+    console.log('chatting start!');
+    window.location = '../quickmatch/quickmatch-chat.html?meeting_id=' + encodeURIComponent(value);
 }
