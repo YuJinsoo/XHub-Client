@@ -1,9 +1,3 @@
-// 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
-if (localStorage.getItem('accessToken')) {
-    isLoggedIn = true;
-} else {
-    isLoggedIn = false;
-}
 
 window.addEventListener('load', function() {    
     const queryString = window.location.search;
@@ -27,7 +21,6 @@ window.addEventListener('load', function() {
     axios.get(`http://localhost/quickmatch/${value}/detail/`)
     .then(response => {
         const responsedata = response.data;
-        console.log('내 사용자 ID: ', responsedata.id);
         render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
 
         // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
@@ -50,14 +43,22 @@ window.addEventListener('load', function() {
 
     })
     .then(response => {
+        const evaluateButton = document.querySelectorAll('.evaluate-btn')
+        console.log(response.data)
         if(response.data.is_member) {
             document.getElementById('attend_btn').style.display = 'none';
             document.getElementById('leave_btn').style.display = 'block';
             document.getElementById('chat_btn').style.display = 'block';
+            for (let button of evaluateButton) {
+                button.style.display = 'block';
+            }
         } else {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
             document.getElementById('chat_btn').style.display = 'none';
+            for (let button of evaluateButton) {
+                button.style.display = 'none';
+            }
         }
     })
     .catch(error => {
@@ -115,6 +116,7 @@ function render_details(data){
         // 각 회원에 대한 평가 버튼 추가
         const evaluateButton = document.createElement('button');
         evaluateButton.textContent = '평가하기';
+        evaluateButton.classList.add('evaluate-btn');
         evaluateButton.addEventListener('click', function() {
             evaluateMember(member.id, data.id);
         });
