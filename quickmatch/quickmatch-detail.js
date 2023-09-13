@@ -3,6 +3,8 @@ window.addEventListener('load', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
+    
+    let UserId;
 
     // Promise 로 리턴됨 (email, id 정보 가지고있음)
     const userInfo = axios.get(`http://localhost/player/check/email/`, {
@@ -11,6 +13,7 @@ window.addEventListener('load', function() {
         }
     })
     .then(response =>{
+        UserId = response.data.id;
         return response.data;
     })
     .catch(error=>{
@@ -21,7 +24,8 @@ window.addEventListener('load', function() {
     axios.get(`http://localhost/quickmatch/${value}/detail/`)
     .then(response => {
         const responsedata = response.data;
-        render_details(responsedata); // 데이터를 가져온 후 세부 정보 렌더링
+        const userId = UserId
+        render_details(responsedata, userId); // 데이터를 가져온 후 세부 정보 렌더링
 
         // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
         userInfo.then(res =>{
@@ -44,7 +48,6 @@ window.addEventListener('load', function() {
     })
     .then(response => {
         const evaluateButton = document.querySelectorAll('.evaluate-btn')
-        console.log(response.data)
         if(response.data.is_member) {
             document.getElementById('attend_btn').style.display = 'none';
             document.getElementById('leave_btn').style.display = 'block';
@@ -66,7 +69,7 @@ window.addEventListener('load', function() {
     });
 });
 
-function render_details(data){
+function render_details(data, currentUserId){
     const detail_container = document.getElementById('meeting_container');
 
     // status와 created_at
@@ -105,6 +108,7 @@ function render_details(data){
 
     detail_container.appendChild(catGenderLocDiv);
 
+
     // 회의 참석자
     const membersDiv = document.createElement('div');
     membersDiv.textContent='<퀵매치 멤버 목록>'
@@ -113,16 +117,19 @@ function render_details(data){
         const displayName = member.nickname || member.email;
         memberSpan.textContent = `${displayName} : (${member.position_display}) (${member.activity_point})`;
         
-        // 각 회원에 대한 평가 버튼 추가
-        const evaluateButton = document.createElement('button');
-        evaluateButton.textContent = '평가하기';
-        evaluateButton.classList.add('evaluate-btn');
-        evaluateButton.addEventListener('click', function() {
-            evaluateMember(member.id, data.id);
-        });
-
         membersDiv.appendChild(memberSpan);
-        membersDiv.appendChild(evaluateButton);
+
+
+        // 각 회원에 대한 평가 버튼 추가
+        if (member.id !== currentUserId) {
+            const evaluateButton = document.createElement('button');
+            evaluateButton.textContent = '평가하기';
+            evaluateButton.classList.add('evaluate-btn');
+            evaluateButton.addEventListener('click', function() {
+                evaluateMember(member.id, data.id);
+            });
+            membersDiv.appendChild(evaluateButton);
+        }
     }
     detail_container.appendChild(membersDiv);
 }
