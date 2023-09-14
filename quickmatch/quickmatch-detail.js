@@ -1,3 +1,17 @@
+const statusDropdown = document.createElement('select');
+const options = ["모집중", "모집완료", "취소"];
+
+options.forEach(optionValue => {
+    let option = document.createElement('option');
+    option.value = optionValue;
+    option.textContent = optionValue;
+    statusDropdown.appendChild(option);
+});
+
+statusDropdown.onchange = statusChange; // 드롭다운 값이 변경될 때 statusChange 호출
+document.querySelector('#button_group').appendChild(statusDropdown);
+
+
 
 window.addEventListener('load', function() {    
     const queryString = window.location.search;
@@ -35,6 +49,12 @@ window.addEventListener('load', function() {
                 deleteBtn.type = 'button';
                 deleteBtn.onclick = deleteMeeting;
                 document.querySelector('#button_group').append(deleteBtn);
+
+                const statusChangeBtn = document.createElement('button');
+                statusChangeBtn.textContent = '모집 완료';
+                statusChangeBtn.type = 'button';
+                statusChangeBtn.onclick = statusChange;
+                document.querySelector('#button_group').append(statusChangeBtn);
             }
         })
         
@@ -152,17 +172,51 @@ async function deleteMeeting() {
         });
 
         if (response.status === 200) {
-        alert('모임이 성공적으로 삭제되었습니다.');
-        window.location.href='meeting-list.html';
+            alert('모임이 성공적으로 삭제되었습니다.');
+            window.location.href='quickmatch-list.html';
         // UI 업데이트 또는 추가 작업
         } else {
-        alert('모임 삭제에 실패하였습니다.');
+            alert('모임 삭제에 실패하였습니다.');
         }
     } catch (error) {
         alert('모임 삭제에 실패하였습니다.');
         console.error('에러발생했습니다.', error)
     }
 }
+
+
+// 모임 참석 함수
+async function statusChange() {
+    const newStatus = this.value;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const value = urlParams.get('meeting_id'); // Get the meeting_id value from the URL
+
+    if (!value) {
+        alert('Failed to retrieve meeting ID from the URL.');
+        return;
+    }
+
+    try {
+        const response = await axios.post(`http://localhost/quickmatch/${value}/status/`, {status: newStatus}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+
+        if (response.status === 200) {
+            alert('모임의 상태가 성공적으로 변경되었습니다.');
+            window.location.href='quickmatch-detail.html';
+            // UI 업데이트 또는 추가 작업
+        } else {
+            alert('상태변경에 실패하였습니다.');
+        }
+    } catch (error) {
+        alert('상태변경에 실패하였습니다.');
+        console.error('에러발생했습니다.', error)
+    }
+}
+
 
 // 모임 참석 함수
 async function attendMeeting() {
