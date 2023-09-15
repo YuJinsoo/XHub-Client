@@ -242,9 +242,31 @@ background-color: #0056b3;
 
 
 #chat_container{
+    overflow: auto;
     background-color: #eee;
     border-radius: 5px;
     padding: 20px 10px;
     height : 300px;
     width : 500px;
+}
+
+.chat_style_me{
+    background-color: #FFF80F;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style{
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style_system{
+    background-color: #aaa;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
 }
