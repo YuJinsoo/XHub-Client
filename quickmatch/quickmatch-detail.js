@@ -1,10 +1,23 @@
+let UserId;
+const statusDropdown = document.createElement('select');
+const options = ["모집중", "모집완료", "취소"];
+
+options.forEach(optionValue => {
+    let option = document.createElement('option');
+    option.value = optionValue;
+    option.textContent = optionValue;
+    statusDropdown.appendChild(option);
+});
+
+statusDropdown.onchange = statusChange; // 드롭다운 값이 변경될 때 statusChange 호출
+document.querySelector('#button_group').appendChild(statusDropdown);
+
+
 
 window.addEventListener('load', function() {    
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
-    
-    let UserId;
 
     // Promise 로 리턴됨 (email, id 정보 가지고있음)
     const userInfo = axios.get(`http://localhost/player/check/email/`, {
@@ -25,11 +38,13 @@ window.addEventListener('load', function() {
     .then(response => {
         const responsedata = response.data;
         const userId = UserId
+
+        statusDropdown.value = responsedata.status;
         render_details(responsedata, userId); // 데이터를 가져온 후 세부 정보 렌더링
 
         // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
         userInfo.then(res =>{
-            if (res.id === responsedata.id){
+            if (res.id === responsedata.organizer){
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = '미팅 삭제';
                 deleteBtn.type = 'button';
@@ -106,6 +121,11 @@ function render_details(data, currentUserId){
     locationSpan.textContent = data.location;
     catGenderLocDiv.appendChild(locationSpan);
 
+    const evaluationSpan = document.createElement('span');
+    evaluationSpan.className = 'evaluation-btn';
+    evaluationSpan.textContent = data.can_evaluate;
+    catGenderLocDiv.appendChild(evaluationSpan);
+
     detail_container.appendChild(catGenderLocDiv);
 
 
@@ -152,17 +172,54 @@ async function deleteMeeting() {
         });
 
         if (response.status === 200) {
-        alert('모임이 성공적으로 삭제되었습니다.');
-        window.location.href='meeting-list.html';
+            alert('모임이 성공적으로 삭제되었습니다.');
+            window.location.href='quickmatch-list.html';
         // UI 업데이트 또는 추가 작업
         } else {
-        alert('모임 삭제에 실패하였습니다.');
+            alert('모임 삭제에 실패하였습니다.');
         }
     } catch (error) {
         alert('모임 삭제에 실패하였습니다.');
         console.error('에러발생했습니다.', error)
     }
 }
+
+
+// 모임 상태 변경 함수
+async function statusChange() {
+    const newStatus = this.value;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const value = urlParams.get('meeting_id');
+
+    if (!value) {
+        alert('Failed to retrieve meeting ID from the URL.');
+        return;
+    }
+
+    try {
+        const response = await axios.post(`http://localhost/quickmatch/${value}/status/`, {status: newStatus}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+
+        if (response.status === 200) {
+            alert('모임의 상태가 성공적으로 변경되었습니다.');
+            
+            // 상태 변경 후 미팅의 세부 정보를 다시 가져옵니다.
+            const detailResponse = await axios.get(`http://localhost/quickmatch/${value}/detail/`);
+            const responsedata = detailResponse.data;
+            render_details(responsedata, UserId);
+        } else {
+            alert('상태변경에 실패하였습니다.');
+        }
+    } catch (error) {
+        alert('상태변경에 실패하였습니다.');
+        console.error('에러발생했습니다.', error)
+    }
+}
+
 
 // 모임 참석 함수
 async function attendMeeting() {
