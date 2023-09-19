@@ -50,6 +50,13 @@ window.addEventListener('load', function() {
                 deleteBtn.type = 'button';
                 deleteBtn.onclick = deleteMeeting;
                 document.querySelector('#button_group').append(deleteBtn);
+
+                document.querySelector('#button_group').appendChild(statusDropdown);
+            } else {
+                // 작성자가 아닐 경우 드롭다운 숨기기
+                if(statusDropdown.parentElement) {
+                    statusDropdown.parentElement.removeChild(statusDropdown);
+                }
             }
         })
         
@@ -141,7 +148,8 @@ function render_details(data, currentUserId){
 
 
         // 각 회원에 대한 평가 버튼 추가
-        if (member.id !== currentUserId) {
+        if ((member.id !== currentUserId) && (data.can_evaluate)) {
+            console.log(data)
             const evaluateButton = document.createElement('button');
             evaluateButton.textContent = '평가하기';
             evaluateButton.classList.add('evaluate-btn');
@@ -211,6 +219,7 @@ async function statusChange() {
             const detailResponse = await axios.get(`http://localhost/quickmatch/${value}/detail/`);
             const responsedata = detailResponse.data;
             render_details(responsedata, UserId);
+            location.reload();
         } else {
             alert('상태변경에 실패하였습니다.');
         }
@@ -243,8 +252,8 @@ async function attendMeeting() {
             document.getElementById('attend_btn').style.display = 'none';
             document.getElementById('leave_btn').style.display = 'block';
             alert('모임 참석에 성공하였습니다.');
+            location.reload();
             
-            return axios.get(`http://localhost/quickmatch/${value}/detail/`);
         } else {
         alert('모임 참석에 실패하였습니다.');
         }
@@ -316,6 +325,7 @@ async function evaluateMember(memberId, meetingId) {
 
         if (response.status === 200) {
             alert('회원 평가에 성공했습니다.');
+            location.reload();
         } else {
             alert(response.data.status);
         }
