@@ -1,4 +1,6 @@
 let UserId;
+
+// 초기 상태 드롭다운 설정
 const statusDropdown = document.createElement('select');
 const options = ["모집중", "모집완료", "취소"];
 
@@ -9,87 +11,82 @@ options.forEach(optionValue => {
     statusDropdown.appendChild(option);
 });
 
-statusDropdown.onchange = statusChange; // 드롭다운 값이 변경될 때 statusChange 호출
-document.querySelector('#button_group').appendChild(statusDropdown);
+statusDropdown.onchange = statusChange; 
 
+// 윈도우 로드 시 코드 실행
+window.addEventListener('load', async function() {    
+    const meetingId = new URLSearchParams(window.location.search).get('meeting_id');
 
+    const userInfo = await getUserInfo();
+    UserId = userInfo.id || null;
 
-window.addEventListener('load', function() {    
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const value = urlParams.get('meeting_id');
+    const meetingDetail = await getMeetingDetail(meetingId);
+    render_details(meetingDetail, UserId);
 
-    // Promise 로 리턴됨 (email, id 정보 가지고있음)
-    const userInfo = axios.get(`http://localhost/player/check/email/`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
-    })
-    .then(response =>{
-        UserId = response.data.id;
-        return response.data;
-    })
-    .catch(error=>{
-        console.error('에러발생 : ', error)
-        return error;
-    })
+    const isMember = await checkMembership(meetingId);
+    toggleUIBasedOnMembership(isMember);
+});
 
-    axios.get(`http://localhost/quickmatch/${value}/detail/`)
-    .then(response => {
-        const responsedata = response.data;
-        const userId = UserId
-
-        statusDropdown.value = responsedata.status;
-        render_details(responsedata, userId); // 데이터를 가져온 후 세부 정보 렌더링
-
-        // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
-        userInfo.then(res =>{
-            if (res.id === responsedata.organizer){
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = '미팅 삭제';
-                deleteBtn.type = 'button';
-                deleteBtn.onclick = deleteMeeting;
-                document.querySelector('#button_group').append(deleteBtn);
-
-                document.querySelector('#button_group').appendChild(statusDropdown);
-            } else {
-                // 작성자가 아닐 경우 드롭다운 숨기기
-                if(statusDropdown.parentElement) {
-                    statusDropdown.parentElement.removeChild(statusDropdown);
-                }
-            }
-        })
-        
-        // 멤버십을 확인하여 어떤 버튼을 표시할지 결정
-        return axios.get(`http://localhost/quickmatch/is_member/${value}/`, {
+async function getUserInfo() {
+    try {
+        const response = await axios.get(`http://localhost/player/check/email/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        return {};
+    }
+}
 
-    })
-    .then(response => {
-        const evaluateButton = document.querySelectorAll('.evaluate-btn')
-        if(response.data.is_member) {
-            document.getElementById('attend_btn').style.display = 'none';
-            document.getElementById('leave_btn').style.display = 'block';
-            document.getElementById('chat_btn').style.display = 'block';
-            for (let button of evaluateButton) {
-                button.style.display = 'block';
+async function getMeetingDetail(meetingId) {
+    try {
+        const response = await axios.get(`http://localhost/quickmatch/${meetingId}/detail/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching meeting detail:', error);
+        return {};
+    }
+}
+
+function render_details(data, currentUserId) {
+    // Code for rendering the details...
+}
+
+async function checkMembership(meetingId) {
+    try {
+        const response = await axios.get(`http://localhost/quickmatch/is_member/${meetingId}/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
-        } else {
-            document.getElementById('attend_btn').style.display = 'block';
-            document.getElementById('leave_btn').style.display = 'none';
-            document.getElementById('chat_btn').style.display = 'none';
-            for (let button of evaluateButton) {
-                button.style.display = 'none';
-            }
+        });
+        return response.data.is_member;
+    } catch (error) {
+        console.error('Error checking membership:', error);
+        return false;
+    }
+}
+
+function toggleUIBasedOnMembership(isMember) {
+    const evaluateButton = document.querySelectorAll('.evaluate-btn');
+    if (isMember) {
+        document.getElementById('attend_btn').style.display = 'none';
+        document.getElementById('leave_btn').style.display = 'block';
+        document.getElementById('chat_btn').style.display = 'block';
+        for (let button of evaluateButton) {
+            button.style.display = 'block';
         }
-    })
-    .catch(error => {
-        console.error('오류 발생', error);
-    });
-});
+    } else {
+        document.getElementById('attend_btn').style.display = 'block';
+        document.getElementById('leave_btn').style.display = 'none';
+        document.getElementById('chat_btn').style.display = 'none';
+        for (let button of evaluateButton) {
+            button.style.display = 'none';
+        }
+    }
+}
 
 function render_details(data, currentUserId){
     const detail_container = document.getElementById('meeting_container');
