@@ -61,8 +61,6 @@ function connectWebSocket(){
         console.error('Chat socket closed unexpectedly.', e)
 
         setTimeout(()=>{
-            console.log('WebSokcet 연결 재시도 중...');
-            console.log(reconnectCounter);
             connectWebSocket();
         }, reconnectInterval);
     };

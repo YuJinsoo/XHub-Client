@@ -87,9 +87,10 @@ width: 200px;
 /* Centered Content */
 .section {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
+    margin: 50px 20px;
     height: 100vh;  /* 100% of the viewport height */
 }
 
@@ -168,6 +169,11 @@ background-color: #0056b3;
     margin: 5px 0;
 }
 
+/* memberlist div */
+.memberdiv {
+    border-radius: 5px;
+    border-color: #aaa;
+}
 
 
 

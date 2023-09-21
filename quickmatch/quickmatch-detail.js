@@ -111,6 +111,7 @@ function render_details(data, currentUserId){
 
     // 회의 참석자
     const membersDiv = document.createElement('div');
+    membersDiv.classList.add('memberdiv')
     membersDiv.textContent='<퀵매치 멤버 목록>'
     for (let member of data.meeting_member) {
         const memberSpan = document.createElement('span');
