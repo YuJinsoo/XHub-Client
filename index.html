@@ -19,6 +19,12 @@
         <a href="board/board.html" onclick="showSection('readBoard')">게시판</a>
         <a href="playerList/playerList.html" onclick="showSection('playerList')">플레이어 목록</a>
         <a href="friend/friend.html" onclick="showSection('playerList')">친구 목록</a>
+        <div id="notificationDropdown">
+            <a href="#" onclick="toggleNotificationDropdown()">알림 <span id="notificationCount">0</span></a>
+            <div id="notificationContent" class="dropdown-content">
+                <!-- 알림 내용은 여기에 자바스크립트로 동적으로 채워집니다. -->
+            </div>
+        </div>
     </div>
 
     <!-- 자바스크립트 import 목록 -->

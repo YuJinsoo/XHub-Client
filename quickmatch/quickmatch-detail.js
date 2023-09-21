@@ -149,7 +149,6 @@ function render_details(data, currentUserId){
 
         // 각 회원에 대한 평가 버튼 추가
         if ((member.id !== currentUserId) && (data.can_evaluate)) {
-            console.log(data)
             const evaluateButton = document.createElement('button');
             evaluateButton.textContent = '평가하기';
             evaluateButton.classList.add('evaluate-btn');
