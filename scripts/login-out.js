@@ -54,6 +54,7 @@ async function logout() {
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('userEmail');
         isLoggedIn = false;  // 로그아웃 했으므로 isLoggedIn을 false로 설정
         updateButtonVisibility();
         alert('로그아웃 성공');
@@ -78,6 +79,7 @@ async function login() {
       if (response.status === 200 && response.data && response.data.access) {
           // 로그인 성공 시 accessToken을 localStorage에 저장
           localStorage.setItem('accessToken', response.data.access);
+          localStorage.setItem('userEmail', email);
           isLoggedIn = true;
           updateButtonVisibility();
           alert('로그인 성공');

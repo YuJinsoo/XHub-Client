@@ -87,9 +87,10 @@ width: 200px;
 /* Centered Content */
 .section {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
+    margin: 50px 20px;
     height: 100vh;  /* 100% of the viewport height */
 }
 
@@ -168,6 +169,11 @@ background-color: #0056b3;
     margin: 5px 0;
 }
 
+/* memberlist div */
+.memberdiv {
+    border-radius: 5px;
+    border-color: #aaa;
+}
 
 
 
@@ -242,9 +248,31 @@ background-color: #0056b3;
 
 
 #chat_container{
+    overflow: auto;
     background-color: #eee;
     border-radius: 5px;
     padding: 20px 10px;
     height : 300px;
     width : 500px;
+}
+
+.chat_style_me{
+    background-color: #FFF80F;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style{
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style_system{
+    background-color: #aaa;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
 }
