@@ -5,7 +5,7 @@ async function signup() {
 
     try {
         // Axios를 사용하여 서버에 회원가입 요청을 보냅니다.
-        const response = await axios.post('http://ec2-43-202-15-66.ap-northeast-2.compute.amazonaws.com/player/register/', {
+        const response = await axios.post('http://localhost/player/register/', {
             email: email,
             password: password
         });

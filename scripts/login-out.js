@@ -46,7 +46,7 @@ async function handleResponseError(error) {
 // 로그아웃 함수
 async function logout() {
   try {
-      const response = await axios.delete('http://ec2-43-202-15-66.ap-northeast-2.compute.amazonaws.com/player/logout/', {
+      const response = await axios.delete('http://localhost/player/logout/', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -71,7 +71,7 @@ async function login() {
   var password = document.getElementById('password').value;
 
   try {
-      const response = await axios.post('http://ec2-43-202-15-66.ap-northeast-2.compute.amazonaws.com/player/login/', {
+      const response = await axios.post('http://localhost/player/login/', {
           email: email,
           password: password
       });
