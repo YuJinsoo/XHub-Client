@@ -12,5 +12,9 @@ XHub 의 주요 기능들을 테스트 해 볼 수 있는 클라이언트 페이
 ## 용도
 이 클라이언트 에서 할 수 있는 주요 사항들은 다음과 같습니다.
 
-1.
-2. 
+1. 회원 기능
+2. 1:1 채팅
+
+## 개발 환경
+![js](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
+![html](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
