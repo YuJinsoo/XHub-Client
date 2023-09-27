@@ -25,7 +25,7 @@ document.querySelector('#send_input').onkeyup = function(e){
 connectWebSocket();
 
 function connectWebSocket(){
-    const chatSocket = new WebSocket(`ws://localhost/ws/quickmatch/${meeting_id}/room/?token=${jwttoken}&rcc=${reconnectCounter}`);
+    const chatSocket = new WebSocket(`ws://54.248.217.183/ws/quickmatch/${meeting_id}/room/?token=${jwttoken}&rcc=${reconnectCounter}`);
 
     document.querySelector('#send_btn').addEventListener('click', sendMessage);
     
@@ -73,7 +73,7 @@ function connectWebSocket(){
         const messageInput = document.querySelector('#send_input');
         const message = messageInput.value;
     
-        await axios.get(`http://localhost/player/check/email`, {
+        await axios.get(`http://54.248.217.183/player/check/email`, {
             headers:{
                 'Authorization': `Bearer ${jwttoken}`
             }
@@ -126,7 +126,7 @@ function gotoDetailPage(){
 }
 
 async function getemail(){
-    axios.get('http://localhost/player/check/email/',{
+    axios.get('http://54.248.217.183/player/check/email/',{
     headers:{
             "Authorization": `Bearer ${jwttoken}`
         }

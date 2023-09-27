@@ -29,7 +29,7 @@ window.addEventListener('load', async function() {
 
 async function getUserInfo() {
     try {
-        const response = await axios.get(`http://localhost/player/check/email/`, {
+        const response = await axios.get(`http://54.248.217.183/player/check/email/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -43,7 +43,7 @@ async function getUserInfo() {
 
 async function getMeetingDetail(meetingId) {
     try {
-        const response = await axios.get(`http://localhost/quickmatch/${meetingId}/detail/`);
+        const response = await axios.get(`http://54.248.217.183/quickmatch/${meetingId}/detail/`);
         return response.data;
     } catch (error) {
         console.error('Error fetching meeting detail:', error);
@@ -57,7 +57,7 @@ function render_details(data, currentUserId) {
 
 async function checkMembership(meetingId) {
     try {
-        const response = await axios.get(`http://localhost/quickmatch/is_member/${meetingId}/`, {
+        const response = await axios.get(`http://54.248.217.183/quickmatch/is_member/${meetingId}/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -170,7 +170,7 @@ async function deleteMeeting() {
 
     // 삭제 요청
     try {
-        const response = await axios.post(`http://localhost/quickmatch/${value}/delete/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/${value}/delete/`, {}, {
             headers : {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -203,7 +203,7 @@ async function statusChange() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/${value}/status/`, {status: newStatus}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/${value}/status/`, {status: newStatus}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -213,7 +213,7 @@ async function statusChange() {
             alert('모임의 상태가 성공적으로 변경되었습니다.');
             
             // 상태 변경 후 미팅의 세부 정보를 다시 가져옵니다.
-            const detailResponse = await axios.get(`http://localhost/quickmatch/${value}/detail/`);
+            const detailResponse = await axios.get(`http://54.248.217.183/quickmatch/${value}/detail/`);
             const responsedata = detailResponse.data;
             render_details(responsedata, UserId);
             location.reload();
@@ -239,7 +239,7 @@ async function attendMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/join/${value}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/join/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -271,7 +271,7 @@ async function leaveMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/leave/${value}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/leave/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -283,7 +283,7 @@ async function leaveMeeting() {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
 
-            return axios.get(`http://localhost/quickmatch/${value}/detail/`);
+            return axios.get(`http://54.248.217.183/quickmatch/${value}/detail/`);
         } else {
             alert('회의를 떠나는 데 실패했습니다.');
         }
@@ -314,7 +314,7 @@ function updateMeetingMembers(memberData) {
 // 회원평가 처리 함수
 async function evaluateMember(memberId, meetingId) {
     try {
-        const response = await axios.post(`http://localhost/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
