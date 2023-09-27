@@ -25,7 +25,8 @@ function populateMeetingList(data) {
         const meetingHeader = document.createElement('div');
         meetingHeader.className = 'meeting-header';
         const createdAt = document.createElement('span');
-        createdAt.className = 'careated'
+        // createdAt.className = 'careated'
+        createdAt.className = 'created'
         createdAt.textContent = meeting.created_at.split("T")[0];  
         const status = document.createElement('span');
         status.className = 'status'
