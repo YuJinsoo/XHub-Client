@@ -1,30 +1,15 @@
 const emailInput = document.getElementById('email');
 const activityPointInput = document.getElementById('activity_point');
 const profileImgInput = document.getElementById('profile_img');
-// async function handleResponseError(error) {
-//     if (error.response.status === 401) {
-//         alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-//         // 필요하다면 로그인 페이지로 리디렉션
-//         localStorage.removeItem('accessToken');
-//         window.location.href = 'login.html';
-//     } else {
-//         console.log(error);
-//         alert('오류가 발생했습니다.');
-//     }
-// }
-
-
 
 async function fetchProfile() {
     console.log("Fetching profile...");
     try {
-        const response = await axios.get('http://localhost/player/update/', {
+        const response = await axios.get('http://54.248.217.183/player/update/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         });
-
-
 
         const data = response.data;
         console.log("Fetched data:", data);
@@ -65,7 +50,7 @@ async function submitProfile() {
             formData.append('profile_img', profileImg);
         }
 
-        const response = await axios.put('http://localhost/player/update/', formData, {
+        const response = await axios.put('http://54.248.217.183/player/update/', formData, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -101,7 +86,7 @@ async function submitProfile() {
 async function unregister() {
     if (confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
         try {
-            const response = await axios.delete('http://localhost/player/unregister/', {
+            const response = await axios.delete('http://54.248.217.183/player/unregister/', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
