@@ -132,6 +132,28 @@ background-color: #0056b3;
     flex-wrap: wrap; 
 }
 
+/* board */
+.post-item {
+    border: 5px solid #ddd;
+    margin: 5px;  /* Adjusted for uniform spacing */
+    padding: 10px;
+    flex: 1 1 calc(50% - 20px); /* Adjusted width for 2 column and considering margin and border */
+    box-sizing: border-box; 
+}
+
+.post-item h2 {
+    font-size: 1.5em;
+}
+
+.post-item p {
+    margin-top: 10px;
+}
+
+#postList {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
 
 .join-btn, .leave-btn {
     margin-top: 10px;
