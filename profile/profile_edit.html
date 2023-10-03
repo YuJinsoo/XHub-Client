@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=534aba45eda748bcc4f910e9f15dd292&libraries=services"></script>
     <title>회원정보 수정</title>
 </head>
 <body>
@@ -31,6 +32,9 @@
             프로필 사진:
             <input type="file" id="profile_img" accept="image/*">
         </label>
+
+        <!-- Location -->
+        <div id="map" style="width:500px;height:400px;"></div>
 
         <!-- Age -->
         <label>
@@ -81,5 +85,14 @@
     </form>
 
     <script src="profile_edit.js"></script>
+    <script>
+        var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(33.450701, 126.570667),
+			level: 3
+		};
+
+		var map = new kakao.maps.Map(container, options);
+    </script>
 </body>
 </html>
