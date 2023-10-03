@@ -2,10 +2,14 @@ const emailInput = document.getElementById('email');
 const activityPointInput = document.getElementById('activity_point');
 const profileImgInput = document.getElementById('profile_img');
 
+// 위도, 경도값 변수 선언
+let latitude = null;
+let longitude = null;
+
 async function fetchProfile() {
     console.log("Fetching profile...");
     try {
-        const response = await axios.get('http://54.248.217.183/player/update/', {
+        const response = await axios.get('http://localhost/player/update/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -29,6 +33,39 @@ async function fetchProfile() {
     }
 }
 
+
+// 지도 및 위도, 경도값 받기
+function sample5_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            var addr = data.address; // 최종 주소 정보
+
+            // 해당 필드에 주소 정보를 삽입합니다.
+            document.getElementById("sample5_address").value = addr;
+            // 주소를 기반으로 상세 정보 검색
+            geocoder.addressSearch(data.address, function(results, status) {
+                // 검색이 정상적으로 완료된 경우
+                if (status === daum.maps.services.Status.OK) {
+                    var result = results[0]; // 첫 번째 결과 값을 사용합니다.
+
+                    // 주소에 대한 좌표를 받습니다.
+                    latitude = result.y;
+                    longitude = result.x;
+
+                    // 지도를 표시합니다.
+                    mapContainer.style.display = "block";
+                    map.relayout();
+                    // 지도 중심을 변경합니다.
+                    map.setCenter(new daum.maps.LatLng(latitude, longitude));
+                    // 마커를 결과로 받은 위치로 이동시킵니다.
+                    marker.setPosition(new daum.maps.LatLng(latitude, longitude));
+                }
+            });
+        }
+    }).open();
+}
+
+
 async function submitProfile() {
     console.log("Submitting profile...");
     try {
@@ -37,6 +74,9 @@ async function submitProfile() {
         formData.append('gender', document.getElementById('gender').value);
         formData.append('category', document.getElementById('category').value);
         formData.append('position', document.getElementById('position').value);
+        console.log(`위도, 경도 ${latitude}, ${longitude}`)
+        formData.append('latitude', parseFloat(latitude).toFixed(6));
+        formData.append('longitude', parseFloat(longitude).toFixed(6));
 
         console.log("Form Data: ", formData);
 
@@ -50,7 +90,7 @@ async function submitProfile() {
             formData.append('profile_img', profileImg);
         }
 
-        const response = await axios.put('http://54.248.217.183/player/update/', formData, {
+        const response = await axios.put('http://localhost/player/update/', formData, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -62,6 +102,7 @@ async function submitProfile() {
 
         if (response.status === 200) {
             alert('회원정보가 성공적으로 수정되었습니다.');
+            window.location.href = '../index.html';
         } else {
             alert('회원정보 수정에 실패하였습니다.');
         }
@@ -86,7 +127,7 @@ async function submitProfile() {
 async function unregister() {
     if (confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
         try {
-            const response = await axios.delete('http://54.248.217.183/player/unregister/', {
+            const response = await axios.delete('http://localhost/player/unregister/', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
