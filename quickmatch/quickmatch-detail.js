@@ -1,3 +1,5 @@
+import { tokenRefresh, navigateToLoginPage } from "../scripts/token.js";
+
 let UserId;
 const statusDropdown = document.createElement('select');
 const options = ["모집중", "모집완료", "취소"];
@@ -14,27 +16,29 @@ document.querySelector('#button_group').appendChild(statusDropdown);
 
 
 
-window.addEventListener('load', function() {    
+window.addEventListener('load', loadpage);
+
+async function loadpage() {    
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const value = urlParams.get('meeting_id');
 
-    // Promise 로 리턴됨 (email, id 정보 가지고있음)
-    const userInfo = axios.get(`http://localhost/player/check/email/`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
-    })
-    .then(response =>{
-        UserId = response.data.id;
-        return response.data;
-    })
-    .catch(error=>{
-        console.error('에러발생 : ', error)
-        return error;
-    })
+    // if (userInfo.status === 200) {
+    // // UI 업데이트 또는 추가 작업
+    // } else if(userInfo.status === 401 ){
+    //     // UnAuthorization
+    //     console.log('401에러까지 왔어!');
+    //     if (localStorage.getItem('userEmail')){
+    //         tokenRefresh();
+    //     }
+    //     else{
+    //         navigateToLoginPage();
+    //     }
+    // } else {
+    //     console.error(response.error);
+    // }
 
-    axios.get(`http://localhost/quickmatch/${value}/detail/`)
+    await axios.get(`http://localhost/quickmatch/${value}/detail/`)
     .then(response => {
         const responsedata = response.data;
         const userId = UserId
@@ -43,7 +47,12 @@ window.addEventListener('load', function() {
         render_details(responsedata, userId); // 데이터를 가져온 후 세부 정보 렌더링
 
         // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
-        userInfo.then(res =>{
+        // Promise 로 리턴됨 (email, id 정보 가지고있음)
+        axios.get(`http://localhost/player/check/email/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        }).then(res =>{
             if (res.id === responsedata.organizer){
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = '미팅 삭제';
@@ -57,6 +66,17 @@ window.addEventListener('load', function() {
                 if(statusDropdown.parentElement) {
                     statusDropdown.parentElement.removeChild(statusDropdown);
                 }
+            }
+        }).catch(error=>{
+            console.log(error)
+            if (error.response.status == 401){
+                // UnAuthorization
+                console.log('here?')
+                errorhandle();
+            }
+            else{
+                console.error('에러발생: ', error)
+                return error;
             }
         })
         
@@ -89,7 +109,33 @@ window.addEventListener('load', function() {
     .catch(error => {
         console.error('오류 발생', error);
     });
-});
+
+    document.getElementById('chat_btn').addEventListener('click', getChat);
+};
+
+async function errorhandle(){
+    if (localStorage.getItem('userEmail')){
+        await tokenRefresh();
+        
+        const p = await axios.get(`http://localhost/player/check/email/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        
+        p.URLSearchParamsthen(response=>{
+            UserId = response.data.id;
+            return response.data;
+        })
+        .catch(error =>{
+            console.error('error occure:', error);
+        })
+    }
+    else{
+        navigateToLoginPage();
+    }
+}
+
 
 function render_details(data, currentUserId){
     const detail_container = document.getElementById('meeting_container');
@@ -183,6 +229,14 @@ async function deleteMeeting() {
             alert('모임이 성공적으로 삭제되었습니다.');
             window.location.href='quickmatch-list.html';
         // UI 업데이트 또는 추가 작업
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert('모임 삭제에 실패하였습니다.');
         }
@@ -254,6 +308,14 @@ async function attendMeeting() {
             alert('모임 참석에 성공하였습니다.');
             location.reload();
             
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
         alert('모임 참석에 실패하였습니다.');
         }
@@ -287,6 +349,14 @@ async function leaveMeeting() {
             document.getElementById('leave_btn').style.display = 'none';
 
             return axios.get(`http://localhost/quickmatch/${value}/detail/`);
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert('회의를 떠나는 데 실패했습니다.');
         }
@@ -326,6 +396,14 @@ async function evaluateMember(memberId, meetingId) {
         if (response.status === 200) {
             alert('회원 평가에 성공했습니다.');
             location.reload();
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert(response.data.status);
         }
