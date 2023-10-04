@@ -56,7 +56,7 @@ async function createMeeting() {
         formData.append('max_participants', eventMax);
 
 
-        const response = await axios.post('http://localhost/quickmatch/create/', data, {
+        const response = await axios.post('http://54.248.217.183/quickmatch/create/', data, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }

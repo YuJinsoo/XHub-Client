@@ -10,6 +10,18 @@
 <body>
     <form id="profileForm">
         <h1>회원정보 수정</h1>
+        <hr>
+        <!-- Profile Image -->
+        <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+            <label for="imageUpload" class="btn upload-btn">
+                <img id="profileImagePreview" src="https://bootdey.com/img/Content/avatar/avatar7.png" class="form-control d-none" alt="avatar">
+                <h6>변경할 프로필 이미지를 업로드하세요 (400kb 크기 제한).</h6>
+                <input type="file" id="imageUpload" class="form-control">
+            </label>            
+        </div>
+        <hr>
         <label>
             이메일:
             <input type="email" id="email" disabled>
@@ -24,12 +36,6 @@
         <label>
             현재 비밀번호 (수정을 위해 다시입력):
             <input type="password" id="currentPassword" required>
-        </label>
-
-        <!-- Profile Image -->
-        <label>
-            프로필 사진:
-            <input type="file" id="profile_img" accept="image/*">
         </label>
 
         <!-- Age -->

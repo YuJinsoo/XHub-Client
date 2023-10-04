@@ -31,8 +31,8 @@ document.querySelector('#todetail_btn').addEventListener('click', function(e){
 //웹소켓 연결 시도.
 connectWebSocket();
 
-async function connectWebSocket(){
-    const chatSocket = new WebSocket(`ws://localhost/ws/quickmatch/${meeting_id}/room/?token=${jwttoken}&rcc=${reconnectCounter}`);
+function connectWebSocket(){
+    const chatSocket = new WebSocket(`ws://54.248.217.183/ws/quickmatch/${meeting_id}/room/?token=${jwttoken}&rcc=${reconnectCounter}`);
 
     document.querySelector('#send_btn').addEventListener('click', sendMessage);
     document.querySelector('#leave_btn').addEventListener('click', function(){
@@ -87,7 +87,7 @@ async function connectWebSocket(){
         const messageInput = document.querySelector('#send_input');
         const message = messageInput.value;
     
-        await axios.get(`http://localhost/player/check/email`, {
+        await axios.get(`http://54.248.217.183/player/check/email`, {
             headers:{
                 'Authorization': `Bearer ${jwttoken}`
             }
@@ -136,12 +136,12 @@ async function leaveChating(){
         console.log('leave metting chat');
         console.log(res);
     }).catch(error =>{
-      console.error('에러발생: ', error);
-      if (error.response.status == 401){
-        console.log('herher')
-      }
+        console.error('에러발생: ', error);
+        if (error.response.status == 401){
+            console.log('herher')
+        }
     }).finally(
-
+        //finally
     );
 
 }
@@ -151,7 +151,7 @@ function gotoDetailPage(){
 }
 
 async function getemail(){
-    axios.get('http://localhost/player/check/email/',{
+    axios.get('http://54.248.217.183/player/check/email/',{
     headers:{
             "Authorization": `Bearer ${jwttoken}`
         }

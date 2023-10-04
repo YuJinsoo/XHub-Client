@@ -1,6 +1,8 @@
 import { tokenRefresh, navigateToLoginPage } from "../scripts/token.js";
 
 let UserId;
+
+// 초기 상태 드롭다운 설정
 const statusDropdown = document.createElement('select');
 const options = ["모집중", "모집완료", "취소"];
 
@@ -11,12 +13,178 @@ options.forEach(optionValue => {
     statusDropdown.appendChild(option);
 });
 
-statusDropdown.onchange = statusChange; // 드롭다운 값이 변경될 때 statusChange 호출
-document.querySelector('#button_group').appendChild(statusDropdown);
+statusDropdown.onchange = statusChange; 
 
+// 윈도우 로드 시 코드 실행
+window.addEventListener('load', async function() {    
+    const meetingId = new URLSearchParams(window.location.search).get('meeting_id');
 
+    const userInfo = await getUserInfo();
+    UserId = userInfo.id || null;
 
+    const meetingDetail = await getMeetingDetail(meetingId);
+    render_details(meetingDetail, UserId);
+
+    const isMember = await checkMembership(meetingId);
+    toggleUIBasedOnMembership(isMember);
+});
 window.addEventListener('load', loadpage);
+
+async function getUserInfo() {
+    try {
+        const response = await axios.get(`http://54.248.217.183/player/check/email/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        return {};
+    }
+}
+
+async function getMeetingDetail(meetingId) {
+    try {
+        const response = await axios.get(`http://54.248.217.183/quickmatch/${meetingId}/detail/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching meeting detail:', error);
+        return {};
+    }
+}
+
+function render_details(data, currentUserId) {
+    // Code for rendering the details...
+}
+
+async function checkMembership(meetingId) {
+    try {
+        const response = await axios.get(`http://54.248.217.183/quickmatch/is_member/${meetingId}/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+        return response.data.is_member;
+    } catch (error) {
+        console.error('Error checking membership:', error);
+        return false;
+    }
+}
+
+function toggleUIBasedOnMembership(isMember) {
+    const evaluateButton = document.querySelectorAll('.evaluate-btn');
+    if (isMember) {
+        document.getElementById('attend_btn').style.display = 'none';
+        document.getElementById('leave_btn').style.display = 'block';
+        document.getElementById('chat_btn').style.display = 'block';
+        for (let button of evaluateButton) {
+            button.style.display = 'block';
+        }
+    } else {
+        document.getElementById('attend_btn').style.display = 'block';
+        document.getElementById('leave_btn').style.display = 'none';
+        document.getElementById('chat_btn').style.display = 'none';
+        for (let button of evaluateButton) {
+            button.style.display = 'none';
+        }
+    }
+}
+
+function render_details(data, currentUserId){
+    const detail_container = document.getElementById('meeting_container');
+
+    // status와 created_at
+    const statusCreatedAtDiv = document.createElement('div');
+    statusCreatedAtDiv.textContent = `${data.status} ${data.created_at.split("T")[0]}`;
+    detail_container.appendChild(statusCreatedAtDiv);
+
+    // title, current_participants, max_participants 및 organizer
+    const titleParticipantsDiv = document.createElement('div');
+    titleParticipantsDiv.textContent = `${data.title} [${data.meeting_member.length || 0}/${data.max_participants}] ${data.organizer}`;
+    detail_container.appendChild(titleParticipantsDiv);
+
+    // description
+    const descriptionDiv = document.createElement('div');
+    descriptionDiv.textContent = data.description;
+    detail_container.appendChild(descriptionDiv);
+
+    // category, gender_limit 및 location
+    const catGenderLocDiv = document.createElement('div');
+    catGenderLocDiv.classList.add('category-location');
+
+    const categorySpan = document.createElement('span');
+    categorySpan.className = 'category-btn';
+    categorySpan.textContent = data.category;
+    catGenderLocDiv.appendChild(categorySpan);
+
+    const genderLimitSpan = document.createElement('span');
+    genderLimitSpan.className = 'gender-limit-btn';
+    genderLimitSpan.textContent = data.gender_limit;
+    catGenderLocDiv.appendChild(genderLimitSpan);
+
+    const locationSpan = document.createElement('span');
+    locationSpan.className = 'location-btn';
+    locationSpan.textContent = data.location;
+    catGenderLocDiv.appendChild(locationSpan);
+
+    const evaluationSpan = document.createElement('span');
+    evaluationSpan.className = 'evaluation-btn';
+    evaluationSpan.textContent = data.can_evaluate;
+    catGenderLocDiv.appendChild(evaluationSpan);
+
+    detail_container.appendChild(catGenderLocDiv);
+
+
+    // 회의 참석자
+    const membersDiv = document.createElement('div');
+    membersDiv.classList.add('memberdiv')
+    membersDiv.textContent='<퀵매치 멤버 목록>'
+    for (let member of data.meeting_member) {
+        const memberSpan = document.createElement('span');
+        const displayName = member.nickname || member.email;
+        memberSpan.textContent = `${displayName} : (${member.position_display}) (${member.activity_point})`;
+        
+        membersDiv.appendChild(memberSpan);
+
+
+        // 각 회원에 대한 평가 버튼 추가
+        if ((member.id !== currentUserId) && (data.can_evaluate)) {
+            const evaluateButton = document.createElement('button');
+            evaluateButton.textContent = '평가하기';
+            evaluateButton.classList.add('evaluate-btn');
+            evaluateButton.addEventListener('click', function() {
+                evaluateMember(member.id, data.id);
+            });
+            membersDiv.appendChild(evaluateButton);
+        }
+    }
+    detail_container.appendChild(membersDiv);
+}
+
+async function errorhandle(){
+    if (localStorage.getItem('userEmail')){
+        await tokenRefresh();
+        
+        const p = await axios.get(`http://localhost/player/check/email/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        
+        p.URLSearchParamsthen(response=>{
+            UserId = response.data.id;
+            return response.data;
+        })
+        .catch(error =>{
+            console.error('error occure:', error);
+        })
+    }
+    else{
+        navigateToLoginPage();
+    }
+}
+
 
 async function loadpage() {    
     const queryString = window.location.search;
@@ -113,102 +281,6 @@ async function loadpage() {
     document.getElementById('chat_btn').addEventListener('click', getChat);
 };
 
-async function errorhandle(){
-    if (localStorage.getItem('userEmail')){
-        await tokenRefresh();
-        
-        const p = await axios.get(`http://localhost/player/check/email/`, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-            }
-        })
-        
-        p.URLSearchParamsthen(response=>{
-            UserId = response.data.id;
-            return response.data;
-        })
-        .catch(error =>{
-            console.error('error occure:', error);
-        })
-    }
-    else{
-        navigateToLoginPage();
-    }
-}
-
-
-function render_details(data, currentUserId){
-    const detail_container = document.getElementById('meeting_container');
-
-    // status와 created_at
-    const statusCreatedAtDiv = document.createElement('div');
-    statusCreatedAtDiv.textContent = `${data.status} ${data.created_at.split("T")[0]}`;
-    detail_container.appendChild(statusCreatedAtDiv);
-
-    // title, current_participants, max_participants 및 organizer
-    const titleParticipantsDiv = document.createElement('div');
-    titleParticipantsDiv.textContent = `${data.title} [${data.meeting_member.length || 0}/${data.max_participants}] ${data.organizer}`;
-    detail_container.appendChild(titleParticipantsDiv);
-
-    // description
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.textContent = data.description;
-    detail_container.appendChild(descriptionDiv);
-
-    // category, gender_limit 및 location
-    const catGenderLocDiv = document.createElement('div');
-    catGenderLocDiv.classList.add('category-location');
-
-    const categorySpan = document.createElement('span');
-    categorySpan.className = 'category-btn';
-    categorySpan.textContent = data.category;
-    catGenderLocDiv.appendChild(categorySpan);
-
-    const genderLimitSpan = document.createElement('span');
-    genderLimitSpan.className = 'gender-limit-btn';
-    genderLimitSpan.textContent = data.gender_limit;
-    catGenderLocDiv.appendChild(genderLimitSpan);
-
-    const locationSpan = document.createElement('span');
-    locationSpan.className = 'location-btn';
-    locationSpan.textContent = data.location;
-    catGenderLocDiv.appendChild(locationSpan);
-
-    const evaluationSpan = document.createElement('span');
-    evaluationSpan.className = 'evaluation-btn';
-    evaluationSpan.textContent = data.can_evaluate;
-    catGenderLocDiv.appendChild(evaluationSpan);
-
-    detail_container.appendChild(catGenderLocDiv);
-
-
-    // 회의 참석자
-    const membersDiv = document.createElement('div');
-    membersDiv.classList.add('memberdiv')
-    membersDiv.textContent='<퀵매치 멤버 목록>'
-    for (let member of data.meeting_member) {
-        const memberSpan = document.createElement('span');
-        const displayName = member.nickname || member.email;
-        memberSpan.textContent = `${displayName} : (${member.position_display}) (${member.activity_point})`;
-        
-        membersDiv.appendChild(memberSpan);
-
-
-        // 각 회원에 대한 평가 버튼 추가
-        if ((member.id !== currentUserId) && (data.can_evaluate)) {
-            const evaluateButton = document.createElement('button');
-            evaluateButton.textContent = '평가하기';
-            evaluateButton.classList.add('evaluate-btn');
-            evaluateButton.addEventListener('click', function() {
-                evaluateMember(member.id, data.id);
-            });
-            membersDiv.appendChild(evaluateButton);
-        }
-    }
-    detail_container.appendChild(membersDiv);
-}
-
-
 // 모임 삭제 함수
 async function deleteMeeting() {
 
@@ -219,7 +291,7 @@ async function deleteMeeting() {
 
     // 삭제 요청
     try {
-        const response = await axios.post(`http://localhost/quickmatch/${value}/delete/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/${value}/delete/`, {}, {
             headers : {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -260,7 +332,7 @@ async function statusChange() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/${value}/status/`, {status: newStatus}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/${value}/status/`, {status: newStatus}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -270,7 +342,7 @@ async function statusChange() {
             alert('모임의 상태가 성공적으로 변경되었습니다.');
             
             // 상태 변경 후 미팅의 세부 정보를 다시 가져옵니다.
-            const detailResponse = await axios.get(`http://localhost/quickmatch/${value}/detail/`);
+            const detailResponse = await axios.get(`http://54.248.217.183/quickmatch/${value}/detail/`);
             const responsedata = detailResponse.data;
             render_details(responsedata, UserId);
             location.reload();
@@ -296,7 +368,7 @@ async function attendMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/join/${value}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/join/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -336,7 +408,7 @@ async function leaveMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://localhost/quickmatch/leave/${value}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/leave/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -348,7 +420,7 @@ async function leaveMeeting() {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
 
-            return axios.get(`http://localhost/quickmatch/${value}/detail/`);
+            return axios.get(`http://54.248.217.183/quickmatch/${value}/detail/`);
         } else if(response.status === 401 ){
             // UnAuthorization
             if (localStorage.getItem('userEmail')){
@@ -387,7 +459,7 @@ function updateMeetingMembers(memberData) {
 // 회원평가 처리 함수
 async function evaluateMember(memberId, meetingId) {
     try {
-        const response = await axios.post(`http://localhost/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
+        const response = await axios.post(`http://54.248.217.183/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }

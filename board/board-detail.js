@@ -1,3 +1,4 @@
+// <!-- 미사용 확인시, 이 파일은 삭제예정 -->
 // 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
 if (localStorage.getItem('accessToken')) {
     isLoggedIn = true;
@@ -12,7 +13,7 @@ window.addEventListener('load', function(){
     const urlParams = new URLSearchParams(qureyString);
     const value = urlParams.get('post_id');
 
-    axios.get(`http://localhost/board/${value}/`)
+    axios.get(`http://54.248.217.183/board/${value}/`)
         .then(response => {
             const data = response.data;
             render_post_details(data);
@@ -70,7 +71,7 @@ async function loadPosts() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.get(`http://localhost/board?ordering=-created_at&page=${currentPage}`, {
+        const response = await axios.get(`http://54.248.217.183/board?ordering=-created_at&page=${currentPage}`, {
             headers: {
                 'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
             }
