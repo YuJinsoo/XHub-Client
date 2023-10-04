@@ -3,16 +3,18 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 async function submitPost() {
-    const postContent = document.getElementById("postContent").value;
-    const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
+    const postTitle = document.getElementById("postTitle").value; // Getting the title
+    const postContent = editor.getMarkdown(); // Get content directly from TOAST UI Editor
+    const token = localStorage.getItem('accessToken');  // Get token from localStorage
 
     try {
         const response = await axios.post('http://54.248.217.183/board/write/', {
-            gather_title: document.getElementById('postTitle').value,
-            context: postContent
+            gather_title: postTitle,
+            context: postContent,
+            public: true
         }, {
             headers: {
-                'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
+                'Authorization': `Bearer ${token}`  // Add token to header
             }
         });
 
@@ -22,7 +24,6 @@ async function submitPost() {
         }
     } catch (error) {
         console.error('게시글 작성에 실패했습니다.', error);
-        console.error('Server Response: ', error.response.data);  // 이 부분 추가
+        console.error('Server Response: ', error.response.data);
     }
 }
-

@@ -1,3 +1,5 @@
+import { tokenRefresh, navigateToLoginPage } from "./token.js";
+
 // 초기에 모든 섹션을 숨깁니다.
 document.querySelectorAll('.section').forEach(function(section) {
     section.style.display = 'none';
@@ -46,6 +48,15 @@ function fetchNotifications() {
     })
     .catch(error => {
         console.error('Error fetching notifications:', error);
+        if (error.response.status == 401){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
+        }
     });
 }
 

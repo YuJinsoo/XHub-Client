@@ -3,23 +3,29 @@
 <head>
     <title>게시글 작성 - 운동 매칭 서비스</title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+    <!-- toast ui css -->
+    <style>
+        * {
+            text-align:  center;
+        }
+        #editor {
+            border : 1px solid;
+            width : 50%;
+            margin : 0 auto;
+        }
+    </style>
+    <!-- Editor's Style -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 </head>
 <body>
     <h1><a href="../index.html">운동 매칭 서비스</a></h1>
-
     <!-- 게시글 작성 섹션 -->
     <div id="writeBoard" class="section">
         <h2>게시글 작성</h2>
-        <form id="boardForm">
-            <div class="group">
-                <label for="postTitle">글 제목</label>
-                <input type="text" id="postTitle">
-            </div>
-            <div class="group">
-                <label>글 내용</label>
-                <textarea id="postContent" placeholder="게시글 내용을 입력해주세요."></textarea>
-            </div>
-        </form>
+        <!-- 제목 -->
+        <input type="text" id="postTitle" placeholder="게시글 제목을 입력하세요." />
+        <!-- toast ui -->
+        <div id="editor"></div>
         <div class="group">
             <button id="submitButton">게시</button>
             <button onclick="location.href='./board.html'">돌아가기</button>
@@ -28,6 +34,22 @@
 
     <button onclick="location.href='board.html'">돌아가기</button>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <!-- TOAST UI Editor 생성 JavaScript 코드 -->
+    <script>
+        const editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            previewStyle: 'vertical',
+            height: '500px',
+            initialValue: '모든 이들이 보는 게시글입니다. 서로를 존중하는 글을 작성하며 세계 평화에 기여하세요.'
+        });
+    </script>
+
+    <!-- 게시글 DB로 전송 -->
+    document.querySelector('#contents').insertAdjacentHTML('afterbegin' ,editor.getHtml());
+    console.log(editor.getHtml());
+
     <script src="./board-write.js"></script>
 </body>
 </html>
