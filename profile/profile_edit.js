@@ -22,7 +22,7 @@ let longitude = null;
 async function fetchProfile() {
     console.log("Fetching profile...");
     try {
-        const response = await axios.get('http://localhost/player/update/', {
+        const response = await axios.get('http://54.248.217.183/player/update/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -106,7 +106,7 @@ async function submitProfile() {
             formData.append('profile_img', profileImg);
         }
 
-        const response = await axios.put('http://localhost/player/update/', formData, {
+        const response = await axios.put('http://54.248.217.183/player/update/', formData, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -145,7 +145,7 @@ async function submitProfile() {
 async function unregister() {
     if (confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
         try {
-            const response = await axios.delete('http://localhost/player/unregister/', {
+            const response = await axios.delete('http://54.248.217.183/player/unregister/', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                 }
