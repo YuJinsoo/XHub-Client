@@ -7,7 +7,7 @@ async function submitPost() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.post('http://54.248.217.183/board/write/', {
+        const response = await axios.post('http://exercisehub.xyz/board/write/', {
             gather_title: document.getElementById('postTitle').value,
             context: postContent
         }, {
