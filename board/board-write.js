@@ -8,7 +8,7 @@ async function submitPost() {
     const token = localStorage.getItem('accessToken');  // Get token from localStorage
 
     try {
-        const response = await axios.post('http://54.248.217.183/board/write/', {
+        const response = await axios.post('http://exercisehub.xyz/board/write/', {
             gather_title: postTitle,
             context: postContent,
             public: true

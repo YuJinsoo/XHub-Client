@@ -46,7 +46,7 @@ async function handleResponseError(error) {
 // 로그아웃 함수
 async function logout() {
   try {
-      const response = await axios.delete('http://54.248.217.183/player/logout/', {
+      const response = await axios.delete('http://exercisehub.xyz/player/logout/', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -72,7 +72,7 @@ async function login() {
   var password = document.getElementById('password').value;
 
   try {
-      const response = await axios.post('http://54.248.217.183/player/login/', {
+      const response = await axios.post('http://exercisehub.xyz/player/login/', {
           email: email,
           password: password
       });
