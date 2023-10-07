@@ -11,7 +11,7 @@ async function addFriend(event) {
 
     try {
         // API 호출을 통해 친구 추가
-        const response = await axios.post('http://exercisehub.xyz/player/add-friend/', {
+        const response = await axios.post('https://exercisehub.xyz/player/add-friend/', {
             email: friendEmail
         }, {
             headers: {
@@ -42,7 +42,7 @@ async function addFriend(event) {
 async function fetchFriendList() {
     try {
         // API 호출을 통해 친구 목록 조회
-        const response = await axios.get('http://exercisehub.xyz/player/friends/', {
+        const response = await axios.get('https://exercisehub.xyz/player/friends/', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }

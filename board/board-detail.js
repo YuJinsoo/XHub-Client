@@ -13,7 +13,7 @@ window.addEventListener('load', function(){
     const urlParams = new URLSearchParams(qureyString);
     const value = urlParams.get('post_id');
 
-    axios.get(`http://exercisehub.xyz/board/${value}/`)
+    axios.get(`https://exercisehub.xyz/board/${value}/`)
         .then(response => {
             const data = response.data;
             render_post_details(data);
@@ -71,7 +71,7 @@ async function loadPosts() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.get(`http://exercisehub.xyz/board?ordering=-created_at&page=${currentPage}`, {
+        const response = await axios.get(`https://exercisehub.xyz/board?ordering=-created_at&page=${currentPage}`, {
             headers: {
                 'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
             }

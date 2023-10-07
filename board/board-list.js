@@ -1,6 +1,6 @@
 let currentPage = 1;
 
-axios.get('http://exercisehub.xyz/board/')
+axios.get('https://exercisehub.xyz/board/')
     .then(response => {
         const data = response.data;
         console.log("서버로 부터 읽어져 오는 데이터", data);
@@ -54,7 +54,7 @@ async function loadPosts() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.get(`http://exercisehub.xyz/board?ordering=-created_at&page=${currentPage}`, {
+        const response = await axios.get(`https://exercisehub.xyz/board?ordering=-created_at&page=${currentPage}`, {
             headers: {
                 'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
             }

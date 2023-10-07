@@ -7,7 +7,7 @@ XHub 의 주요 기능들을 테스트 해 볼 수 있는 클라이언트 페이
 ## 초기 설정
 아래의 배포 클라이언트 주소로 진입해서 테스트를 진행 할 수 있습니다.
 
-- [클라이언트 주소](https://aminsc.github.io/XHub-Client/)
+- [클라이언트 주소](https://exercisehub.github.io/XHub-Client/)
 - [API 서버 주소](54.248.217.183)
 
 ## 용도

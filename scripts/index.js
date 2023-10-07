@@ -17,7 +17,7 @@ function showSection(id) {
 
 // 알림을 가져오는 함수
 function fetchNotifications() {
-    axios.get('http://exercisehub.xyz/quickmatch/notifications/', {
+    axios.get('https://exercisehub.xyz/quickmatch/notifications/', {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -63,7 +63,7 @@ function fetchNotifications() {
 // 특정 알림을 읽음으로 표시하는 함수
 async function markNotificationAsRead(notificationId) {
     try {
-        await axios.patch(`http://exercisehub.xyz/quickmatch/notifications/${notificationId}/`, {
+        await axios.patch(`https://exercisehub.xyz/quickmatch/notifications/${notificationId}/`, {
             read: true
         }, {
             headers: {
