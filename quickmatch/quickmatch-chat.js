@@ -1,4 +1,7 @@
+import { tokenRefresh } from "../scripts/token.js";
+
 // 페이지 로딩 시 accessToken이 존재하는지 확인하여 isLoggedIn 값을 설정
+let isLoggedIn= false;
 if (localStorage.getItem('accessToken')) {
     isLoggedIn = true;
 } else {
@@ -21,6 +24,10 @@ document.querySelector('#send_input').onkeyup = function(e){
     }
 };
 
+document.querySelector('#todetail_btn').addEventListener('click', function(e){
+    window.location = './quickmatch-detail.html?meeting_id='+encodeURIComponent(meeting_id);
+})
+
 //웹소켓 연결 시도.
 connectWebSocket();
 
@@ -28,6 +35,11 @@ function connectWebSocket(){
     const chatSocket = new WebSocket(`ws://exercisehub.xyz/ws/quickmatch/${meeting_id}/room/?token=${jwttoken}&rcc=${reconnectCounter}`);
 
     document.querySelector('#send_btn').addEventListener('click', sendMessage);
+    document.querySelector('#leave_btn').addEventListener('click', function(){
+        chatSocket.close();
+        console.log('client close.');
+        leaveChating();
+    });
     
     chatSocket.onopen = function(e) {
         console.log('WebSocket 연결이 열렸습니다.');
@@ -59,10 +71,12 @@ function connectWebSocket(){
     
     chatSocket.onclose = function(e){
         console.error('Chat socket closed unexpectedly.', e)
-
-        setTimeout(()=>{
-            connectWebSocket();
-        }, reconnectInterval);
+        
+        if (e.code !== 1000){
+            setTimeout(()=>{
+                connectWebSocket();
+            }, reconnectInterval);
+        }
     };
     
     chatSocket.onerror = function(e){
@@ -113,16 +127,27 @@ function renderChat(data){
 }
 
 
-function leaveChating(){
-    console.log("떠나기.")
+async function leaveChating(){
+    console.log("떠나기 반영.");
+
+    await axios.post(`http://localhost/quickmatch/${meeting_id}/detail/leavechat/`, {}, { headers :{
+        'Authorization': `Bearer ${jwttoken}`,
+    }}).then(res => {
+        console.log('leave metting chat');
+        console.log(res);
+    }).catch(error =>{
+        console.error('에러발생: ', error);
+        if (error.response.status == 401){
+            console.log('herher')
+        }
+    }).finally(
+        //finally
+    );
+
 }
 
 function gotoDetailPage(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const value = urlParams.get('meeting_id');
-
-    window.location = './quickmatch-detail.html?meeting_id='+encodeURIComponent(value);
+    
 }
 
 async function getemail(){

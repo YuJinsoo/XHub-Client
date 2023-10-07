@@ -1,3 +1,5 @@
+import { tokenRefresh, navigateToLoginPage } from "../scripts/token.js";
+
 let UserId;
 
 // 초기 상태 드롭다운 설정
@@ -14,18 +16,19 @@ options.forEach(optionValue => {
 statusDropdown.onchange = statusChange; 
 
 // 윈도우 로드 시 코드 실행
-window.addEventListener('load', async function() {    
-    const meetingId = new URLSearchParams(window.location.search).get('meeting_id');
+// window.addEventListener('load', async function() {    
+//     const meetingId = new URLSearchParams(window.location.search).get('meeting_id');
 
-    const userInfo = await getUserInfo();
-    UserId = userInfo.id || null;
+//     const userInfo = await getUserInfo();
+//     UserId = userInfo.id || null;
 
-    const meetingDetail = await getMeetingDetail(meetingId);
-    render_details(meetingDetail, UserId);
+//     const meetingDetail = await getMeetingDetail(meetingId);
+//     render_details(meetingDetail, UserId);
 
-    const isMember = await checkMembership(meetingId);
-    toggleUIBasedOnMembership(isMember);
-});
+//     const isMember = await checkMembership(meetingId);
+//     toggleUIBasedOnMembership(isMember);
+// });
+window.addEventListener('load', loadpage);
 
 async function getUserInfo() {
     try {
@@ -51,9 +54,9 @@ async function getMeetingDetail(meetingId) {
     }
 }
 
-function render_details(data, currentUserId) {
-    // Code for rendering the details...
-}
+// function render_details(data, currentUserId) {
+//     // Code for rendering the details...
+// }
 
 async function checkMembership(meetingId) {
     try {
@@ -159,6 +162,60 @@ function render_details(data, currentUserId){
     detail_container.appendChild(membersDiv);
 }
 
+async function errorhandle(){
+    if (localStorage.getItem('userEmail')){
+        await tokenRefresh();
+        
+        const p = await axios.get(`http://54.248.217.183/player/check/email/`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        
+        p.URLSearchParamsthen(response=>{
+            UserId = response.data.id;
+            return response.data;
+        })
+        .catch(error =>{
+            console.error('error occure:', error);
+        })
+    }
+    else{
+        navigateToLoginPage();
+    }
+}
+
+
+async function loadpage() {    
+    const meetingId = new URLSearchParams(window.location.search).get('meeting_id');
+
+    // getUserInfo 함수를 호출하여 사용자 정보를 가져옴
+    const userInfo = await getUserInfo();
+    UserId = userInfo.id || null;
+
+    const meetingDetail = await getMeetingDetail(meetingId);
+    render_details(meetingDetail, UserId);
+
+    const isMember = await checkMembership(meetingId);
+    toggleUIBasedOnMembership(isMember);
+
+    // 로그인 한 사용자와 작성자가 동일하면 삭제 버튼 표시.
+    if (UserId === meetingDetail.organizer) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '미팅 삭제';
+        deleteBtn.type = 'button';
+        deleteBtn.onclick = deleteMeeting;
+        document.querySelector('#button_group').append(deleteBtn);
+
+        document.querySelector('#button_group').appendChild(statusDropdown);
+    } else {
+        // 작성자가 아닐 경우 드롭다운 숨기기
+        if(statusDropdown.parentElement) {
+            statusDropdown.parentElement.removeChild(statusDropdown);
+        }
+    }
+}
+
 
 // 모임 삭제 함수
 async function deleteMeeting() {
@@ -180,6 +237,14 @@ async function deleteMeeting() {
             alert('모임이 성공적으로 삭제되었습니다.');
             window.location.href='quickmatch-list.html';
         // UI 업데이트 또는 추가 작업
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert('모임 삭제에 실패하였습니다.');
         }
@@ -251,6 +316,14 @@ async function attendMeeting() {
             alert('모임 참석에 성공하였습니다.');
             location.reload();
             
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
         alert('모임 참석에 실패하였습니다.');
         }
@@ -284,6 +357,14 @@ async function leaveMeeting() {
             document.getElementById('leave_btn').style.display = 'none';
 
             return axios.get(`http://exercisehub.xyz/quickmatch/${value}/detail/`);
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert('회의를 떠나는 데 실패했습니다.');
         }
@@ -323,6 +404,14 @@ async function evaluateMember(memberId, meetingId) {
         if (response.status === 200) {
             alert('회원 평가에 성공했습니다.');
             location.reload();
+        } else if(response.status === 401 ){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                tokenRefresh();
+            }
+            else{
+                navigateToLoginPage();
+            }
         } else {
             alert(response.data.status);
         }
@@ -341,3 +430,6 @@ function getChat(){
     console.log('chatting start!');
     window.location = '../quickmatch/quickmatch-chat.html?meeting_id=' + encodeURIComponent(value);
 }
+
+document.getElementById('attend_btn').addEventListener('click', attendMeeting);
+
