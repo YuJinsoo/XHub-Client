@@ -87,7 +87,7 @@ function connectWebSocket(){
         const messageInput = document.querySelector('#send_input');
         const message = messageInput.value;
     
-        await axios.get(`http://exercisehub.xyz/player/check/email`, {
+        await axios.get(`https://exercisehub.xyz/player/check/email`, {
             headers:{
                 'Authorization': `Bearer ${jwttoken}`
             }
@@ -130,7 +130,7 @@ function renderChat(data){
 async function leaveChating(){
     console.log("떠나기 반영.");
 
-    await axios.post(`http://localhost/quickmatch/${meeting_id}/detail/leavechat/`, {}, { headers :{
+    await axios.post(`https://localhost/quickmatch/${meeting_id}/detail/leavechat/`, {}, { headers :{
         'Authorization': `Bearer ${jwttoken}`,
     }}).then(res => {
         console.log('leave metting chat');
@@ -151,7 +151,7 @@ function gotoDetailPage(){
 }
 
 async function getemail(){
-    axios.get('http://exercisehub.xyz/player/check/email/',{
+    axios.get('https://exercisehub.xyz/player/check/email/',{
     headers:{
             "Authorization": `Bearer ${jwttoken}`
         }

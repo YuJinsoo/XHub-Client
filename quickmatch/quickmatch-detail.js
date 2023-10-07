@@ -32,7 +32,7 @@ window.addEventListener('load', loadpage);
 
 async function getUserInfo() {
     try {
-        const response = await axios.get(`http://exercisehub.xyz/player/check/email/`, {
+        const response = await axios.get(`https://exercisehub.xyz/player/check/email/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -46,7 +46,7 @@ async function getUserInfo() {
 
 async function getMeetingDetail(meetingId) {
     try {
-        const response = await axios.get(`http://exercisehub.xyz/quickmatch/${meetingId}/detail/`);
+        const response = await axios.get(`https://exercisehub.xyz/quickmatch/${meetingId}/detail/`);
         return response.data;
     } catch (error) {
         console.error('Error fetching meeting detail:', error);
@@ -60,7 +60,7 @@ async function getMeetingDetail(meetingId) {
 
 async function checkMembership(meetingId) {
     try {
-        const response = await axios.get(`http://exercisehub.xyz/quickmatch/is_member/${meetingId}/`, {
+        const response = await axios.get(`https://exercisehub.xyz/quickmatch/is_member/${meetingId}/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -166,7 +166,7 @@ async function errorhandle(){
     if (localStorage.getItem('userEmail')){
         await tokenRefresh();
         
-        const p = await axios.get(`http://54.248.217.183/player/check/email/`, {
+        const p = await axios.get(`https://54.248.217.183/player/check/email/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -227,7 +227,7 @@ async function deleteMeeting() {
 
     // 삭제 요청
     try {
-        const response = await axios.post(`http://exercisehub.xyz/quickmatch/${value}/delete/`, {}, {
+        const response = await axios.post(`https://exercisehub.xyz/quickmatch/${value}/delete/`, {}, {
             headers : {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -268,7 +268,7 @@ async function statusChange() {
     }
 
     try {
-        const response = await axios.post(`http://exercisehub.xyz/quickmatch/${value}/status/`, {status: newStatus}, {
+        const response = await axios.post(`https://exercisehub.xyz/quickmatch/${value}/status/`, {status: newStatus}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -278,7 +278,7 @@ async function statusChange() {
             alert('모임의 상태가 성공적으로 변경되었습니다.');
             
             // 상태 변경 후 미팅의 세부 정보를 다시 가져옵니다.
-            const detailResponse = await axios.get(`http://exercisehub.xyz/quickmatch/${value}/detail/`);
+            const detailResponse = await axios.get(`https://exercisehub.xyz/quickmatch/${value}/detail/`);
             const responsedata = detailResponse.data;
             render_details(responsedata, UserId);
             location.reload();
@@ -304,7 +304,7 @@ async function attendMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://exercisehub.xyz/quickmatch/join/${value}/`, {}, {
+        const response = await axios.post(`https://exercisehub.xyz/quickmatch/join/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -344,7 +344,7 @@ async function leaveMeeting() {
     }
 
     try {
-        const response = await axios.post(`http://exercisehub.xyz/quickmatch/leave/${value}/`, {}, {
+        const response = await axios.post(`https://exercisehub.xyz/quickmatch/leave/${value}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -356,7 +356,7 @@ async function leaveMeeting() {
             document.getElementById('attend_btn').style.display = 'block';
             document.getElementById('leave_btn').style.display = 'none';
 
-            return axios.get(`http://exercisehub.xyz/quickmatch/${value}/detail/`);
+            return axios.get(`https://exercisehub.xyz/quickmatch/${value}/detail/`);
         } else if(response.status === 401 ){
             // UnAuthorization
             if (localStorage.getItem('userEmail')){
@@ -395,7 +395,7 @@ function updateMeetingMembers(memberData) {
 // 회원평가 처리 함수
 async function evaluateMember(memberId, meetingId) {
     try {
-        const response = await axios.post(`http://exercisehub.xyz/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
+        const response = await axios.post(`https://exercisehub.xyz/quickmatch/evaluate_member/${memberId}/${meetingId}/`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }

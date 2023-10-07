@@ -2,7 +2,7 @@ async function tokenRefresh(){
     let RT_value = localStorage.getItem('refreshToken');
     let AC_value = localStorage.getItem('accessToken');
     
-    const response = await axios.post('http://localhost/player/token/refresh/', {
+    const response = await axios.post('https://exercisehub.xyz/player/token/refresh/', {
         refresh: RT_value,
     },
     {
@@ -35,7 +35,7 @@ function navigateToLoginPage(){
     // 기존 접속 페이지 url
     let nowUrl = window.location.href;
     // console.log(nowUrl);
-    window.location.href = 'http://localhost:5500/auth/login.html';
+    window.location.href = 'https://exercisehub.xyz/auth/login.html';
 }
 
 
