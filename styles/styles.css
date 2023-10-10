@@ -87,9 +87,10 @@ width: 200px;
 /* Centered Content */
 .section {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
+    margin: 50px 20px;
     height: 100vh;  /* 100% of the viewport height */
     margin-top: 100px;
     margin-bottom: 50px;
@@ -112,10 +113,13 @@ background-color: #0056b3;
 /* meeting-list */
 /* Meeting List */
 .meeting-item {
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
+    border: 5px solid #ddd;
+    margin: 5px;  /* Adjusted for uniform spacing */
     padding: 10px;
+    flex: 1 1 calc(50% - 20px); /* Adjusted width for 2 column and considering margin and border */
+    box-sizing: border-box; 
 }
+
 
 .meeting-item h2 {
     font-size: 1.5em;
@@ -125,9 +129,85 @@ background-color: #0056b3;
     margin-top: 10px;
 }
 
+#meetingList {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+/* board */
+.post-item {
+    border: 5px solid #ddd;
+    margin: 5px;  /* Adjusted for uniform spacing */
+    padding: 10px;
+    flex: 1 1 calc(50% - 20px); /* Adjusted width for 2 column and considering margin and border */
+    box-sizing: border-box; 
+}
+
+.post-item h2 {
+    font-size: 1.5em;
+}
+
+.post-item p {
+    margin-top: 10px;
+}
+
+#postList {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+
 .join-btn, .leave-btn {
     margin-top: 10px;
 }
+
+.category, .location, .status {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category:hover, .location:hover {
+    background-color: #ddd;
+}
+
+.meeting-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* meeting-detail */
+.category-btn, .gender-limit-btn, .location-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: 2px solid #333;
+    box-shadow: 3px 3px 3px #aaa;
+    transition: 0.2s;
+}
+.category-btn:hover, .gender-limit-btn:hover, .location-btn:hover {
+    box-shadow: 1px 1px 1px #aaa;
+    transform: translate(2px, 2px);
+}
+
+/* members 스타일링 */
+#meeting_container div span {
+    display: block;
+    margin: 5px 0;
+}
+
+/* memberlist div */
+.memberdiv {
+    border-radius: 5px;
+    border-color: #aaa;
+}
+
+
 
 /* profile_edit */
 #profileForm {
@@ -196,6 +276,120 @@ background-color: #0056b3;
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0;
+}
+
+
+#chat_container{
+    overflow: auto;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 20px 10px;
+    height : 300px;
+    width : 500px;
+}
+
+.chat_style_me{
+    background-color: #FFF80F;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style{
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style_system{
+    background-color: #aaa;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+#profileImagePreview {
+    margin: 10px;
+}
+
+body{margin-top:20px;}
+.avatar{
+width:200px;
+height:200px;
+}				              
+
+/* Buttons */
+.upload-btn {
+    display: inline-block;
+    /* background-color: #d9ffe1; */
+    color: black;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background-color: #eee;
+}
+
+
+#chat_container{
+    overflow: auto;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 20px 10px;
+    height : 300px;
+    width : 500px;
+}
+
+.chat_style_me{
+    background-color: #FFF80F;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style{
+    background-color: #FFFFFF;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+.chat_style_system{
+    background-color: #aaa;
+    margin: 5px;
+    padding: 5px 3px;
+    border-radius: 5px;
+}
+
+#profileImagePreview {
+    margin: 10px;
+}
+
+body{margin-top:20px;}
+.avatar{
+width:200px;
+height:200px;
+}				              
+
+/* Buttons */
+.upload-btn {
+    display: inline-block;
+    /* background-color: #d9ffe1; */
+    color: black;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background-color: #eee;
 }
 
 /* MeetingForm */

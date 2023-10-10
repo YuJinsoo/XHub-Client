@@ -5,7 +5,7 @@ async function signup() {
 
     try {
         // Axios를 사용하여 서버에 회원가입 요청을 보냅니다.
-        const response = await axios.post('http://localhost/player/register/', {
+        const response = await axios.post('https://exercisehub.xyz/player/register/', {
             email: email,
             password: password
         });

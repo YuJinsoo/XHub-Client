@@ -36,7 +36,7 @@ async function handleResponseError(error) {
     alert('세션이 만료되었습니다. 다시 로그인해주세요.');
     // 필요하다면 로그인 페이지로 리디렉션
     localStorage.removeItem('accessToken');
-    window.location.href = 'login.html';
+    window.location.href = 'auth/login.html';
   } else {
     console.log(error);
     alert('오류가 발생했습니다.');
@@ -46,7 +46,7 @@ async function handleResponseError(error) {
 // 로그아웃 함수
 async function logout() {
   try {
-      const response = await axios.delete('http://localhost/player/logout/', {
+      const response = await axios.delete('https://exercisehub.xyz/player/logout/', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -54,6 +54,8 @@ async function logout() {
 
       if (response.status === 200) {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userEmail');
         isLoggedIn = false;  // 로그아웃 했으므로 isLoggedIn을 false로 설정
         updateButtonVisibility();
         alert('로그아웃 성공');
@@ -70,7 +72,7 @@ async function login() {
   var password = document.getElementById('password').value;
 
   try {
-      const response = await axios.post('http://localhost/player/login/', {
+      const response = await axios.post('https://exercisehub.xyz/player/login/', {
           email: email,
           password: password
       });
@@ -78,10 +80,12 @@ async function login() {
       if (response.status === 200 && response.data && response.data.access) {
           // 로그인 성공 시 accessToken을 localStorage에 저장
           localStorage.setItem('accessToken', response.data.access);
+          localStorage.setItem('refreshToken', response.data.refresh);
+          localStorage.setItem('userEmail', email);
           isLoggedIn = true;
           updateButtonVisibility();
           alert('로그인 성공');
-          document.location.href = 'index.html';
+          document.location.href = '../index.html';
       } else {
           alert('로그인 실패');
       }

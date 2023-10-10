@@ -1,3 +1,5 @@
+import { tokenRefresh, navigateToLoginPage } from "../scripts/token.js";
+
 // 페이지가 로드될 때 초기화 작업을 수행합니다.
 window.addEventListener('load', function() {
     // 초기 설정 코드 (예: 로그인 상태 확인, UI 초기화 등)
@@ -54,7 +56,7 @@ async function createMeeting() {
         formData.append('max_participants', eventMax);
 
 
-        const response = await axios.post('http://localhost/quickmatch/create/', data, {
+        const response = await axios.post('https://exercisehub.xyz/quickmatch/create/', data, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -67,6 +69,21 @@ async function createMeeting() {
         } else {
         console.log(response.error)
         alert('모임 생성에 실패하였습니다.111');
+        }
+        if (error.response.status == 401){
+            // UnAuthorization
+            if (localStorage.getItem('userEmail')){
+                alert('토큰 재발급...');
+                tokenRefresh();
+            }
+            else{
+                alert('로그인이 필요합니다.');
+                navigateToLoginPage();
+            }
+        }
+        else{
+            console.error('에러발생: ', error)
+            return error;
         }
     } catch (error) {
         alert('모임 생성에 실패하였습니다.222');

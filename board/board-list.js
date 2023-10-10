@@ -1,12 +1,23 @@
 let currentPage = 1;
 
-axios.get('http://localhost/board/')
-.then(response => {
-    const data = response.data;
-    console.log(data);
-    populatePostlist(data);})
-.catch(error => console.error('Error fetching Posts:', error))
+axios.get('https://exercisehub.xyz/board/')
+    .then(response => {
+        const data = response.data;
+        console.log("서버로 부터 읽어져 오는 데이터", data);
+        
+        // 데이터 값이 배열인지 확인
+        if (data && Array.isArray(data.results)) {
+            populatePostlist(data.results);
+        } else {
+            console.error("Received data does not contain a results array:", data);
+        }        
+    })
+    .catch(error => {
+        console.error('Error fetching Posts:', error);
+        console.log('Error Details:', error.response);
+    });
 
+let isLoggedIn = false;
 if (localStorage.getItem('accessToken')) {
     isLoggedIn = true;
 } else {
@@ -43,17 +54,20 @@ async function loadPosts() {
     const token = localStorage.getItem('accessToken');  // 토큰을 localStorage에서 가져옵니다.
 
     try {
-        const response = await axios.get(`http://localhost/board?ordering=-created_at&page=${currentPage}`, {
+        const response = await axios.get(`https://exercisehub.xyz/board?ordering=-created_at&page=${currentPage}`, {
             headers: {
                 'Authorization': `Bearer ${token}`  // 토큰을 헤더에 추가합니다.
             }
         });
 
-        if (response.status === 200 && response.data) {
-            const postList = document.getElementById("postList");
-            postList.innerHTML = "";  // Clear the existing posts first
+        const data = response.data;
 
-            response.data.forEach(post => {
+        // 조건문을 사용하여 응답이 성공적인지 확인.
+        if (data.results && Array.isArray(data.results)) {
+            const postList = document.getElementById("postList");
+            postList.innerHTML = "";  // 초기화
+
+            data.results.forEach(post => {
                 const postItem = document.createElement("div");
                 postItem.className = "post-item";
                 const postTitle = document.createElement("h3");
@@ -64,9 +78,18 @@ async function loadPosts() {
                 postItem.appendChild(postContent);
                 postList.appendChild(postItem);
             });
+
+            // 게시물의 수에 따라 nextPage 버튼의 활성 상태 설정
+            if (data.results.length < 10) {
+                document.getElementById("nextPage").disabled = true;
+            } else {
+                document.getElementById("nextPage").disabled = false;
+            }
         }
+        
     } catch (error) {
         console.error('게시글을 불러오는 데 실패했습니다.', error);
+        console.log('Error Details in loadPosts:', error.response);
     }
 }
 
@@ -112,7 +135,7 @@ function populatePostlist(data){
 
         const btn = document.createElement('button');
         btn.textContent='보기'
-        btn.clssName = 'join-btn'
+        btn.className = 'join-btn'
 
         btn.onclick = function(e, post_id = post.id){
             // 상세 페이지 로직
